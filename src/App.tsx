@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
+import GoogleMapReact from "google-map-react";
 import './App.css';
 
+interface MapProps {
+  center: {
+    lat: number;
+    lng: number;
+  };
+  zoom: number;
+}
+
+const initialMapProps: MapProps = {
+  center: {
+    lat: 35.39,
+    lng: 139.44,
+  },
+  zoom: 18,
+};
+
+const API_KEY = "AIzaSyDF8X7wYvLceDxjE9zss4vdo9GUgoBFWPQ";
+
 function App() {
+  const [mapProps, setMapProps] = useState<MapProps>(initialMapProps);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: API_KEY }}
+        center={mapProps.center}
+        zoom={mapProps.zoom}
+      />
     </div>
   );
 }
