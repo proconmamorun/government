@@ -8,7 +8,6 @@ import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 
@@ -91,9 +90,9 @@ const InputWithIcon: React.FC = () => {
     const App: React.FC = () => {
         const columns = ['名前', '年齢', '職業'];
         const data = [
-            { 名前: '山田 太郎', 年齢: 30, 職業: 'エンジニア' },
-            { 名前: '佐藤 花子', 年齢: 25, 職業: 'デザイナー' },
-            { 名前: '鈴木 一郎', 年齢: 35, 職業: 'マネージャー' }
+            { name: '山田 太郎', age: 30, job: 'エンジニア' },
+            { name: '佐藤 花子', age: 25, job: 'デザイナー' },
+            { name: '鈴木 一郎', age: 35, job: 'マネージャー' }
         ];
 
         const [content, setContent] = useState(true);
