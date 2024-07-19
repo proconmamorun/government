@@ -20,8 +20,8 @@ const GoogleMapComponent: React.FC = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!
   });
 
-  const directionsCallback = useCallback((result: google.maps.DirectionsResult, status: google.maps.DirectionsStatus) => {
-    if (status === 'OK') {
+  const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    if (status === 'OK' && result) {
       setDirectionsResponse(result);
     } else {
       setError(`Directions request failed due to ${status}`);
@@ -40,12 +40,12 @@ const GoogleMapComponent: React.FC = () => {
       onLoad={() => console.log('Google Map loaded')}
     >
       <DirectionsService
-        options={{
-          destination: 'Tokyo, Japan',
-          origin: 'Yokohama, Japan',
-          travelMode: google.maps.TravelMode.DRIVING
-        }}
-        callback={directionsCallback}
+          options={{
+            destination: 'Kamiyama, Tokushima, Japan',
+            origin: 'Tokushima, Japan',
+            travelMode: google.maps.TravelMode.DRIVING
+          }}
+          callback={directionsCallback}
       />
       {directionsResponse && (
         <DirectionsRenderer
