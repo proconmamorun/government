@@ -30,10 +30,10 @@ const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch
             aria-label="Platform"
         >
             <ToggleButton value="map"
-                          onClick={() => setContent(true)}
+                        onClick={() => setContent(true)}
             >地図</ToggleButton>
             <ToggleButton value="names"
-                          onClick={() => setContent(false)}
+                        onClick={() => setContent(false)}
             >名簿</ToggleButton>
         </ToggleButtonGroup>
     );
