@@ -1,5 +1,7 @@
 import React, { useState }  from 'react';
 import GoogleMapComponent from './component/GoogleMapComponent';
+import RosterTable from "./component/RosterTable";
+
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Button from '@mui/material/Button';
@@ -39,33 +41,6 @@ const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch
     );
 };
 
-type TableProps = {
-    columns: string[];
-    data: { [key: string]: string | number }[];
-};
-const DataTable: React.FC<TableProps> = ({ columns, data }) => {
-    return (
-        <table>
-            <thead>
-            <tr>
-                {columns.map((column, index) => (
-                    <th key={index}>{column}</th>
-                ))}
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                    {columns.map((column, colIndex) => (
-                        <td key={colIndex}>{row[column]}</td>
-                    ))}
-                </tr>
-            ))}
-            </tbody>
-        </table>
-    );
-};
-
 const InputWithIcon: React.FC = () => {
     return (
         <Box sx={{ '& > :not(style)': { m: 1 } }}>
@@ -88,13 +63,6 @@ const InputWithIcon: React.FC = () => {
 
 
     const App: React.FC = () => {
-        const columns = ['名前', '年齢', '職業'];
-        const data = [
-            { name: '山田 太郎', age: 30, job: 'エンジニア' },
-            { name: '佐藤 花子', age: 25, job: 'デザイナー' },
-            { name: '鈴木 一郎', age: 35, job: 'マネージャー' }
-        ];
-
         const [content, setContent] = useState(true);
 
         return (
@@ -114,7 +82,7 @@ const InputWithIcon: React.FC = () => {
                         <h3>並び替え</h3>
                         <Button variant="outlined">五十音順</Button>
                         <Button variant="outlined">年齢順</Button>
-                        <DataTable columns={columns} data={data}/>
+                        <RosterTable />
                     </div>
                 }
 

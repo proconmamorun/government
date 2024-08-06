@@ -1,0 +1,11 @@
+table {
+    margin-top: 2vw;
+}
+
+table th.label {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px 30px;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+}
