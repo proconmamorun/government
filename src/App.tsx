@@ -189,13 +189,13 @@ function MainApp() {
                 </tbody>
             </table>
             <DangerousAcquisition />
-            <h1>地図</h1>
+            {/*<h1>地図</h1>
             <div id="map1">
                 <MapComponent
                     positions={positions}
-                    googleMapsApiKey="AIzaSyCFMteif5MGQEUQpTXbPme69k8yBZjnr0A"
+                    googleMapsApiKey="AIzaSyBdj3i65Jp-AyeCwFUj6n0GmjW_M9Pcr38"
                 />
-            </div>
+                    </div>*/}
         </div>
     );
 }
