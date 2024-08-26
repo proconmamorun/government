@@ -20,6 +20,9 @@ import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
 import MapComponent from "./map";
 import PositionDisplay from './component/PositionDisplay';
 
+import firebase from './firebase';
+
+//位置用の定義
 type Position = {
     id: string;
     latitude: number; //緯度
@@ -35,7 +38,144 @@ interface Figure { //usestateのやつ
     dangerkinds: number;
 }
 
-function MainApp() {
+//名簿用の定義
+type Users = {
+    id: string;
+    name: string; 
+    mail: string; 
+    safety: string; 
+};
+
+interface ListFigure { 
+  id: string;
+  name?: string; 
+  mail?: string; 
+  safety?: string; 
+};
+
+function ListApp() {
+    const [users, setUsers] = useState<Users[]>([]);
+    const [figure, setFigure] = useState<ListFigure>({
+      id: '',
+      name: '',
+      mail: '',
+      safety: '',
+    });
+
+    const handleDelete = async (id: string) => {
+        if (window.confirm("削除してもよろしいですか？")) {
+          try {
+            await deleteDoc(doc(db, "users", id));
+            fetchUsersData();
+            alert("削除しました");
+          } catch (error) {
+            alert("失敗しました");
+          }
+        }
+    };
+    
+      const fetchUsersData = async () => {
+        const usersCollection = collection(db, "users");
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersList = usersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Users[];
+        setUsers(usersList);
+      };
+    
+      useEffect(() => {
+        fetchUsersData();
+      }, []);
+    
+      const handleAdd = async () => {
+        if (window.confirm("追加してもよろしいですか？")) {
+          try {
+            await addDoc(collection(db, "users"), {
+              name: figure.name, 
+              mail: figure.mail, 
+              safety: figure.safety, 
+            });
+            fetchUsersData();
+            setFigure({
+              id: '',
+              name: '',
+              mail: '',
+              safety: '',
+            });
+    
+            alert("追加しました");
+          } catch (error) {
+            alert("失敗しました");
+          }
+        }
+      };
+    
+      const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof ListFigure) => {
+        setFigure({
+          ...figure,
+          [field]: event.target.value
+        });
+      };
+      
+      return (
+        <div>
+        <header className="header"></header>
+        <div className="button-container">
+          <button className="map">地図情報</button>
+          <button className="safetyInfo">安否情報</button>
+        </div>
+        <div className="name-order">
+          <button className="alpha-order">五十音順</button>
+          <button className="old-order">年齢順</button>
+        </div>
+        <div>
+        <label>
+          名前:{" "}
+          <input
+            type="text"
+            value={figure.name} //緯度
+            onChange={(event) => handleInputChange(event, 'name')} 
+          />
+        </label>
+        <label>
+          メールアドレス: {" "}
+          <input
+            type="text"
+            value={figure.mail} //経度
+            onChange={(event) => handleInputChange(event, 'mail')}
+          />
+        </label>
+        <label>
+          危険度: {" "}
+          <input
+            type="text"
+            value={figure.safety} //危険度
+            onChange={(event) => handleInputChange(event, 'safety')}
+          />
+        </label>
+        <button onClick={() => handleAdd()}>追加</button>
+    </div>
+
+    <table border={1}>
+        <tbody>
+            {users.map((user) => (
+                <tr key={user.id}>
+                    <td className="username">{user.name}</td> 
+                    <td className="usersafety">{user.mail}</td> 
+                    <td className="userposition">{user.safety}</td> 
+      <td> 
+        <button onClick={() => handleDelete(user.id)}>削除</button>
+      </td>
+      </tr>
+        ))}
+        </tbody>
+    </table>
+</div>
+    );
+}
+
+const MainApp: React.FC = () => {
     const [positions, setPositions] = useState<Position[]>([]);
     const [figure, setFigure] = useState<Figure>({
         latitude: 0,
@@ -94,6 +234,24 @@ function MainApp() {
         }
     };
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
+        setFigure({
+            ...figure,
+            [field]: event.target.valueAsNumber
+        });
+    };
+
+    return (
+        <Map
+            figure={figure}
+            handleInputChange={handleInputChange}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            positions={positions}
+         />
+        );
+    };
+
     const DangerousAcquisition = () => {
         const [dangerLevels, setDangerLevels] = useState<number[]>([]);
 
@@ -127,14 +285,107 @@ function MainApp() {
         );
     };
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
-        setFigure({
-            ...figure,
-            [field]: event.target.valueAsNumber
-        });
+const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch<React.SetStateAction<boolean>> }> = ({ content, setContent }) => {
+    const [alignment, setAlignment] = useState('map');
+
+    const handleChange1 = (
+        event: React.MouseEvent<HTMLElement>,
+        newAlignment: string,
+    ) => {
+        setAlignment(newAlignment);
     };
 
     return (
+        <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChange1}
+            aria-label="Platform"
+        >
+            <ToggleButton value="map"
+                onClick={() => setContent(true)}
+            >地図</ToggleButton>
+            <ToggleButton value="names"
+                onClick={() => setContent(false)}
+            >名簿</ToggleButton>
+        </ToggleButtonGroup>
+    );
+};
+
+const InputWithIcon: React.FC = () => {
+    return (
+        <Box sx={{ '& > :not(style)': { m: 1 } }}>
+            <FormControl variant="standard">
+                <InputLabel htmlFor="input-with-icon-adornment">
+                    人物を検索
+                </InputLabel>
+                <Input
+                    id="input-with-icon-adornment"
+                    startAdornment={
+                        <InputAdornment position="start">
+                            <AccountCircle />
+                        </InputAdornment>
+                    }
+                />
+            </FormControl>
+        </Box>
+    );
+};
+
+const Map: React.FC<{
+    figure: Figure;
+    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => void;
+    handleAdd: () => void;
+    handleDelete: (id: string) => void;
+    positions: Position[];
+}> = ({ figure, handleInputChange, handleAdd, handleDelete, positions }) => {
+    return (
+        <div>
+            <div className={"container"}>
+                <div className={"item"}>
+                    <Stack spacing={2} direction="column">
+                        <Button
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                backgroundColor: '#85d162',//ボタンの色
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#5f9948', // ホバー時の背景色
+                                },
+                            }}>
+                            町民位置情報
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                backgroundColor: '#fa944b',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#cc793d', // ホバー時の背景色
+                                },
+                            }}>
+                            危険度マップ
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                backgroundColor: '#fa4b4b',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#cc3d3d', // ホバー時の背景色
+                                },
+                            }}>救助隊位置情報
+                        </Button>
+                    </Stack>
+                </div>
+                <div className={"item"}>
+                    <GoogleMapComponent />
+                </div>
+            </div>
         <div>
             <h2>位置</h2>
             <div>
@@ -196,101 +447,6 @@ function MainApp() {
                     googleMapsApiKey="AIzaSyBdj3i65Jp-AyeCwFUj6n0GmjW_M9Pcr38"
                 />
                     </div>*/}
-        </div>
-    );
-}
-
-const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch<React.SetStateAction<boolean>> }> = ({ content, setContent }) => {
-    const [alignment, setAlignment] = useState('map');
-
-    const handleChange1 = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string,
-    ) => {
-        setAlignment(newAlignment);
-    };
-
-    return (
-        <ToggleButtonGroup
-            color="primary"
-            value={alignment}
-            exclusive
-            onChange={handleChange1}
-            aria-label="Platform"
-        >
-            <ToggleButton value="map"
-                onClick={() => setContent(true)}
-            >地図</ToggleButton>
-            <ToggleButton value="names"
-                onClick={() => setContent(false)}
-            >名簿</ToggleButton>
-        </ToggleButtonGroup>
-    );
-};
-
-const InputWithIcon: React.FC = () => {
-    return (
-        <Box sx={{ '& > :not(style)': { m: 1 } }}>
-            <FormControl variant="standard">
-                <InputLabel htmlFor="input-with-icon-adornment">
-                    人物を検索
-                </InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <AccountCircle />
-                        </InputAdornment>
-                    }
-                />
-            </FormControl>
-        </Box>
-    );
-};
-
-const Map: React.FC = () => {
-    return (
-        <div>
-            <div className={"container"}>
-                <div className={"item"}>
-                    <Stack spacing={2} direction="column">
-                        <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                backgroundColor: '#85d162',//ボタンの色
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#5f9948', // ホバー時の背景色
-                                },
-                            }}>
-                            町民位置情報</Button>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                backgroundColor: '#fa944b',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#cc793d', // ホバー時の背景色
-                                },
-                            }}>
-                            危険度マップ</Button>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                backgroundColor: '#fa4b4b',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#cc3d3d', // ホバー時の背景色
-                                },
-                            }}>救助隊位置情報</Button>
-                    </Stack>
-                </div>
-                <div className={"item"}>
-                    <GoogleMapComponent />
-                </div>
             </div>
         </div>
     );
@@ -307,7 +463,7 @@ const List: React.FC = () => {
             <RosterTable />
         </div>
     );
-}
+};
 
 const App: React.FC = () => {
     const [content, setContent] = useState(true);
@@ -315,11 +471,10 @@ const App: React.FC = () => {
     return (
         <Paper elevation={4}>
             <div className={"header"}>
-                <h1>市役所用動作UI</h1>
+                <h1>役場用動作UI</h1>
                 <ColorToggleButton content={content} setContent={setContent} />
             </div>
-            {content ? <Map /> : <List />}
-            <MainApp /> {/* MainAppコンポーネントの追加 */}
+            {content ? <MainApp /> : <ListApp />} {/* MainApp か List のいずれかを表示 */}
         </Paper>
     );
 };
