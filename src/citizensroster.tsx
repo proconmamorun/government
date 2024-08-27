@@ -84,23 +84,13 @@ function App() {
   };
 
   return (
-      <div>
-        <header className="header"></header>
-        <div className="button-container">
-          <button className="map">地図情報</button>
-          <button className="safetyInfo">安否情報</button>
-        </div>
-        <div className="name-order">
-          <button className="alpha-order">五十音順</button>
-          <button className="old-order">年齢順</button>
-          </div>
-          {/*<h2>町民</h2>*/}
-          <div>
-            <label>
-              名前:{" "}
-              <input
+  <div>
+    <div>
+      <label>
+        名前:{" "}
+          <input
                 type="text"
-                value={figure.name} //緯度
+                value={figure.name} //名前
                 onChange={(event) => handleInputChange(event, 'name')} 
               />
             </label>
@@ -108,7 +98,7 @@ function App() {
               メールアドレス: {" "}
               <input
                 type="text"
-                value={figure.mail} //経度
+                value={figure.mail} //メールアドレス
                 onChange={(event) => handleInputChange(event, 'mail')}
               />
             </label>
@@ -125,16 +115,27 @@ function App() {
           <table border={1}>
             <tbody>
               {users.map((user) => (
-                
                 <tr key={user.id}>
                   <td className="username">{user.name}</td> 
                   <td className="usersafety">{user.mail}</td> 
-                  <td className="userposition">{user.safety}</td> 
+                  <td className="userposition">{user.safety}</td>  
+                  <td>
+                    <button onClick={() => handleDelete(user.id)}>削除</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-      </div>
+          <header className="header"></header>
+        <div className="button-container">
+          <button className="map">地図情報</button>
+          <button className="safetyInfo">安否情報</button>
+        </div>
+        <div className="name-order">
+          <button className="alpha-order">五十音順</button>
+          <button className="old-order">年齢順</button>
+          </div>
+        </div>
   );
 }
 
