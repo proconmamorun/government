@@ -1,0 +1,38 @@
+.map {
+    margin-left: 464px;
+  }
+
+  .map-button {
+    background-color: #85D162 !important;
+    color: white;
+  }
+
+  .map-button:hover {
+    background-color: #5F9948 !important;
+  }
+
+  .danger-map-button {
+    background-color: #FA994B !important;
+    color: white;
+  }
+
+  .danger-map-button:hover {
+    background-color: #CC793D !important;
+  }
+
+  .rescue-team-button {
+    background-color: #FA4B4B !important;
+    color: white;
+  }
+
+  .rescue-tema-button:hover {
+    background-color: #CC3D3D !important;
+  }
+
+  .box-container > *:not(style) {
+    margin: 1rem;
+  }
+
+  .item {
+    padding: 10px;
+  }

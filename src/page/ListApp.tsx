@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import '../App.css';
+import './ListApp.css';
+import '../component/InputwithIcon';
+import InputwithIcon from '../component/InputwithIcon';
 
 type Users = {
     id: string;
@@ -84,15 +86,15 @@ const ListApp: React.FC = () => {
 
     return (
         <div>
-            <header className="header"></header>
-            <div className="button-container">
-                <button className="map">地図情報</button>
-                <button className="safetyInfo">安否情報</button>
-            </div>
             <div className="name-order">
                 <button className="alpha-order">五十音順</button>
                 <button className="old-order">年齢順</button>
             </div>
+            <thead>
+            <tr>
+                <th className={"label"}>Name</th><th className={"label"}>Mail</th><th className={"label"}>Safety</th>
+            </tr>
+            </thead>
             <div>
                 <label>
                     名前:{" "}
@@ -126,8 +128,8 @@ const ListApp: React.FC = () => {
                     {users.map((user) => (
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>
-                            <td className="usersafety">{user.mail}</td>
-                            <td className="userposition">{user.safety}</td>
+                            <td className="usermail">{user.mail}</td>
+                            <td className="usersafety">{user.safety}</td>
                             <td>
                                 <button onClick={() => handleDelete(user.id)}>削除</button>
                             </td>
@@ -135,6 +137,8 @@ const ListApp: React.FC = () => {
                     ))}
                 </tbody>
             </table>
+
+            <InputwithIcon />
         </div>
     );
 };

@@ -43,19 +43,6 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                         <Button variant="contained" size="large" className="danger-map-button">危険度マップ</Button>
                         <Button variant="contained" size="large" className="rescue-team-button">救助隊位置情報</Button>
                     </Stack>
-                    <Box className="box-container">
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="input-with-icon-adornment">人物を検索</InputLabel>
-                            <Input
-                                id="input-with-icon-adornment"
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                    </Box>
                 </div>
                 <div className="item">
                     <GoogleMapComponent />

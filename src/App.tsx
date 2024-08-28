@@ -11,7 +11,6 @@ const App: React.FC = () => {
     return (
         <Paper elevation={4} sx={{ backgroundColor: 'transparent' }}>
             <div className="header">
-                {/*<h1>役場用動作UI</h1>*/}
             </div>
             <ColorToggleButton content={content} setContent={setContent} />
             {content ? <MainApp /> : <ListApp />}

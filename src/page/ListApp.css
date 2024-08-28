@@ -1,0 +1,54 @@
+  .safetyInfo {
+    background-color: #F9B07B;
+    margin-left: 749px;
+  }
+
+  .name-order {
+    display: frex;
+    justify-content: center;
+    gap: 50px;
+    margin-left: 43px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  
+  .alpha-order {
+    background-color: #98CB9A;
+    margin-top: 317px;
+  }
+  
+  .old-order {
+    background-color: #F9B07B;
+    margin-top: 416px;
+  }
+
+  table {
+    border-collapse: collapse;
+    background-color: #DCDADA;
+    margin-left: 361px;
+    margin-right: 105px;
+    width: 971px;
+  }
+
+  table th.label {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px 30px;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+  }
+
+  .username {
+    padding-right: 50px;
+    width: 235px;
+  }
+  
+  .usermail {
+    padding-right: 50px;
+    width: 367px;
+  }
+  
+  .usersafety {
+    width: 367px;
+  }

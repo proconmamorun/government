@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+{/*import React, {useEffect, useState} from "react";
 import {db} from './firebaseConfig';
 import {collection, getDocs, addDoc, deleteDoc, doc} from 'firebase/firestore';
 import firebase from './firebase';
@@ -127,10 +127,6 @@ function App() {
             </tbody>
           </table>
           <header className="header"></header>
-        <div className="button-container">
-          <button className="map">地図情報</button>
-          <button className="safetyInfo">安否情報</button>
-        </div>
         <div className="name-order">
           <button className="alpha-order">五十音順</button>
           <button className="old-order">年齢順</button>
@@ -139,4 +135,6 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/}
+
+export {};
