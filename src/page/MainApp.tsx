@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import Map from '../component/Map';
+import '../App.css';
 
 type Position = {
     id: string;

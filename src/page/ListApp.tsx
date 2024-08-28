@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import '../App.css';
 
 type Users = {
     id: string;
