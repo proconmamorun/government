@@ -1,3 +1,10 @@
+html, body {
+    background-color: #D7F0D5;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .MuiPaper-root {
     padding: 3vw;
     height: 100%;
@@ -19,3 +26,138 @@ h1 {
 .item {
     padding: 10px;
 }
+
+.App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  /*
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  */
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .name {
+    margin-left: 363px;
+    width: 235px;
+  }
+  
+  .safety {
+    margin-left: 599px;
+    width: 367px;
+  }
+  
+  .position {
+    margin-left: 967px;
+  }
+  
+  .username {
+    padding-right: 50px;
+    width: 235px;
+  }
+  
+  .usersafety {
+    padding-right: 50px;
+    width: 367px;
+  }
+  
+  .position {
+    width: 367px;
+  }
+  
+  .userposition {
+    width: 367px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    background-color: #DCDADA;
+    margin-left: 361px;
+    margin-right: 105px;
+    width: 971px;
+  }
+
+  .map {
+    margin-left: 464px;
+  }
+  
+  .safetyInfo {
+    background-color: #F9B07B;
+    margin-left: 749px;
+  }
+  
+  .map, .safetyInfo {
+    font-size: 32px;
+    text-align: center;
+    width: 235px;
+    height: 66px;
+    border: none;
+  }
+  
+  .button-container {
+    display: frex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 91px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  
+  .header {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    background-color: #98CB9A;
+  }
+  
+  .name-order {
+    display: frex;
+    justify-content: center;
+    gap: 50px;
+    margin-left: 43px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  
+  .alpha-order {
+    background-color: #98CB9A;
+    margin-top: 317px;
+  }
+  
+  .old-order {
+    background-color: #F9B07B;
+    margin-top: 416px;
+  }

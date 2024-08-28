@@ -24,9 +24,7 @@ const RosterTable: React.FC = () => {
         <table>
             <thead>
             <tr>
-                <th className={"label"}>Name</th>
-                <th className={"label"}>Mail</th>
-                <th className={"label"}>Safety</th>
+                <th className={"label"}>Name</th><th className={"label"}>Mail</th><th className={"label"}>Safety</th>
             </tr>
             </thead>
             <tbody>
