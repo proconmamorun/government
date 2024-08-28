@@ -161,3 +161,35 @@ h1 {
     background-color: #F9B07B;
     margin-top: 416px;
   }
+
+  .map-button {
+    background-color: #85d162;
+    color: white;
+  }
+
+  .map-button:hover {
+    background-color: #5f9948;
+  }
+
+  .danger-map-button {
+    background-color: #fa994b;
+    color: white;
+  }
+
+  .danger-map-button:hover {
+    background-color: #cc793d;
+  }
+
+  .rescue-team-button {
+    background-color: #fa4b4b;
+    color: white;
+  }
+
+  .rescue-tema-button:hover {
+    background-color: #cc3d3d;
+  }
+
+  .box-container > *:not(style) {
+    margin: 1rem;
+  }
+  

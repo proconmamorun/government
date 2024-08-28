@@ -19,6 +19,7 @@ import { db } from './firebaseConfig';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import MapComponent from "./map";
 import PositionDisplay from './component/PositionDisplay';
+import InputwithIcon from './component/InputwithIcon'
 
 import firebase from './firebase';
 
@@ -313,26 +314,6 @@ const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch
     );
 };
 
-const InputWithIcon: React.FC = () => {
-    return (
-        <Box sx={{ '& > :not(style)': { m: 1 } }}>
-            <FormControl variant="standard">
-                <InputLabel htmlFor="input-with-icon-adornment">
-                    人物を検索
-                </InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <AccountCircle />
-                        </InputAdornment>
-                    }
-                />
-            </FormControl>
-        </Box>
-    );
-};
-
 const Map: React.FC<{
     figure: Figure;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => void;
@@ -348,39 +329,37 @@ const Map: React.FC<{
                         <Button
                             variant="contained"
                             size="large"
-                            sx={{
-                                backgroundColor: '#85d162',//ボタンの色
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#5f9948', // ホバー時の背景色
-                                },
-                            }}>
+                            className="map-button">
                             町民位置情報
                         </Button>
                         <Button
                             variant="contained"
                             size="large"
-                            sx={{
-                                backgroundColor: '#fa944b',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#cc793d', // ホバー時の背景色
-                                },
-                            }}>
+                            className="danger-map-button">
                             危険度マップ
                         </Button>
                         <Button
                             variant="contained"
                             size="large"
-                            sx={{
-                                backgroundColor: '#fa4b4b',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#cc3d3d', // ホバー時の背景色
-                                },
-                            }}>救助隊位置情報
+                            className="rescue-team-button">
+                            救助隊位置情報
                         </Button>
-                    </Stack>
+                        </Stack>
+                            <Box className="box-container">
+                                    <FormControl variant="standard">
+                                        <InputLabel htmlFor="input-with-icon-adornment">
+                                            人物を検索
+                                        </InputLabel>
+                                        <Input
+                                            id="input-with-icon-adornment"
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <AccountCircle />
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </FormControl>
+                                </Box>
                 </div>
                 <div className={"item"}>
                     <GoogleMapComponent />
@@ -456,7 +435,7 @@ const List: React.FC = () => {
     return (
         <div>
             <h1>表の例</h1>
-            <InputWithIcon />
+            <InputwithIcon />
             <h3>並び替え</h3>
             <Button variant="outlined">五十音順</Button>
             <Button variant="outlined">年齢順</Button>
@@ -469,7 +448,7 @@ const App: React.FC = () => {
     const [content, setContent] = useState(true);
 
     return (
-        <Paper elevation={4}>
+        <Paper elevation={4} sx={{ backgroundColor: 'transparent' }}>
             <div className={"header"}>
                 <h1>役場用動作UI</h1>
                 <ColorToggleButton content={content} setContent={setContent} />
