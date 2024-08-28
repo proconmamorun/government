@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import GoogleMapComponent from './GoogleMapComponent';
+import DangerousAcquisition from './DangerousAcquisition';
 
 type Position = {
     id: string;
@@ -62,55 +63,59 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
             </div>
             <div>
                 <h2>位置</h2>
-                <label>
-                    緯度:{" "}
-                    <input
-                        type="number"
-                        value={figure.latitude}
-                        onChange={(event) => handleInputChange(event, 'latitude')}
-                    />
-                </label>
-                <label>
-                    経度: {" "}
-                    <input
-                        type="number"
-                        value={figure.longitude}
-                        onChange={(event) => handleInputChange(event, 'longitude')}
-                    />
-                </label>
-                <label>
-                    危険度: {" "}
-                    <input
-                        type="number"
-                        value={figure.dangerlevel}
-                        onChange={(event) => handleInputChange(event, 'dangerlevel')}
-                    />
-                </label>
-                <label>
-                    危険の種類: {" "}
-                    <input
-                        type="number"
-                        value={figure.dangerkinds}
-                        onChange={(event) => handleInputChange(event, 'dangerkinds')}
-                    />
-                </label>
-                <button onClick={() => handleAdd()}>追加</button>
+                <div>
+                    <label>
+                        緯度:{" "}
+                        <input
+                            type="number"
+                            value={figure.latitude}
+                            onChange={(event) => handleInputChange(event, 'latitude')}
+                        />
+                    </label>
+                    <label>
+                        経度: {" "}
+                        <input
+                            type="number"
+                            value={figure.longitude}
+                            onChange={(event) => handleInputChange(event, 'longitude')}
+                        />
+                    </label>
+                    <label>
+                        危険度: {" "}
+                        <input
+                            type="number"
+                            value={figure.dangerlevel}
+                            onChange={(event) => handleInputChange(event, 'dangerlevel')}
+                        />
+                    </label>
+                    <label>
+                        危険の種類: {" "}
+                        <input
+                            type="number"
+                            value={figure.dangerkinds}
+                            onChange={(event) => handleInputChange(event, 'dangerkinds')}
+                        />
+                    </label>
+                    <button onClick={() => handleAdd()}>追加</button>
+                </div>
+
+                <table>
+                    <tbody>
+                        {positions.map((position) => (
+                            <tr key={position.id}>
+                                <td>{position.latitude}</td>
+                                <td>{position.longitude}</td>
+                                <td>{position.dangerlevel}</td>
+                                <td>{position.dangerkinds}</td>
+                                <td>
+                                    <button onClick={() => handleDelete(position.id)}>削除</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <DangerousAcquisition />
             </div>
-            <table>
-                <tbody>
-                    {positions.map((position) => (
-                        <tr key={position.id}>
-                            <td>{position.latitude}</td>
-                            <td>{position.longitude}</td>
-                            <td>{position.dangerlevel}</td>
-                            <td>{position.dangerkinds}</td>
-                            <td>
-                                <button onClick={() => handleDelete(position.id)}>削除</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </div>
     );
 };

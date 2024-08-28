@@ -10,7 +10,7 @@ interface ColorToggleButtonProps {
 const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setContent }) => {
     const [alignment, setAlignment] = useState('map');
 
-    const handleChange1 = (
+    const handleChange = (
         event: React.MouseEvent<HTMLElement>,
         newAlignment: string,
     ) => {
@@ -22,11 +22,15 @@ const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setConte
             color="primary"
             value={alignment}
             exclusive
-            onChange={handleChange1}
+            onChange={handleChange}
             aria-label="Platform"
         >
-            <ToggleButton value="map" onClick={() => setContent(true)}>地図</ToggleButton>
-            <ToggleButton value="names" onClick={() => setContent(false)}>名簿</ToggleButton>
+            <ToggleButton value="map" className="mapbutton"
+                onClick={() => setContent(true)}
+            >地図</ToggleButton>
+            <ToggleButton value="names" className="namesbutton"
+                onClick={() => setContent(false)}
+            >名簿</ToggleButton>
         </ToggleButtonGroup>
     );
 };
