@@ -19,7 +19,6 @@ const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setConte
 
     return (
         <ToggleButtonGroup
-            color="primary"
             value={alignment}
             exclusive
             onChange={handleChange}

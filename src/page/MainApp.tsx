@@ -3,6 +3,7 @@ import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
 import { db } from '../firebaseConfig';
 import Map from '../component/Map';
 import './MainApp.css';
+import '../component/GoogleMapComponent';
 
 type Position = {
     id: string;
@@ -86,13 +87,15 @@ const MainApp: React.FC = () => {
     };
 
     return (
-        <Map
+        <div className="citizen_map">
+        <Map 
             figure={figure}
             handleInputChange={handleInputChange}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             positions={positions}
          />
+         </div>
     );
 };
 

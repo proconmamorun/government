@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+{/*import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 interface Member {
@@ -26,4 +26,6 @@ const fetchRoster = async (): Promise<Member[]> => {
     return memberList;
 };
 
-export { fetchRoster };
+export { fetchRoster };*/}
+
+export {};

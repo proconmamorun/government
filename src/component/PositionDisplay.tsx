@@ -1,4 +1,4 @@
-import React from 'react';
+{/*import React from 'react';
 
 type Figure = {
     latitude: number;
@@ -19,4 +19,6 @@ type Figure = {
         );
     };
 
-export default PositionDisplay;
+export default PositionDisplay;*/}
+
+export {};

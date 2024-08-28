@@ -40,24 +40,31 @@ html, body {
 }
 
 .mapbutton, .namesbutton {
+  position: relative;
   font-size: 32px;
   text-align: center;
-  width: 235px;
-  height: 66px;
+  width: 16vw;
+  height: 5vh;
   border: none;
 }
 
 .header {
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 64px;
   background-color: #98CB9A;
 }
 
 .mapbutton {
-  background-color: #98CB9A;
+  background-color: #98CB9A !important;
+  position: relative;
+  top: 91px;
+  left: 464px;
 }
 
 .namesbutton {
-  background-color: #F9B07B;
+  background-color: #F9B07B !important;
+  position: relative;
+  top: 91px;
+  left: 749px;
 }

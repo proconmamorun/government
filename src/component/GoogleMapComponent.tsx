@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GOOGLE_MAPS_API_KEY } from './config';
 
 const containerStyle = {
   width: '100%',
@@ -7,8 +8,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 35.6895,
-  lng: 139.6917
+  lat: 33.96725162,
+  lng: 134.35047543
 };
 
 const GoogleMapComponent: React.FC = () => {
