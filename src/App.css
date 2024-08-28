@@ -158,3 +158,9 @@ table {
 .box-container > *:not(style) {
   margin: 1rem;
 }
+.mapbutton {
+  background-color: #98CB9A;
+}
+.namesbutton {
+  background-color: #F9B07B;
+}
