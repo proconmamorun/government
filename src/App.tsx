@@ -304,10 +304,10 @@ const ColorToggleButton: React.FC<{ content: boolean, setContent: React.Dispatch
             onChange={handleChange1}
             aria-label="Platform"
         >
-            <ToggleButton value="map"
+            <ToggleButton value="map" className="mapbutton"
                 onClick={() => setContent(true)}
             >地図</ToggleButton>
-            <ToggleButton value="names"
+            <ToggleButton value="names" className="namesbutton"
                 onClick={() => setContent(false)}
             >名簿</ToggleButton>
         </ToggleButtonGroup>
@@ -450,9 +450,9 @@ const App: React.FC = () => {
     return (
         <Paper elevation={4} sx={{ backgroundColor: 'transparent' }}>
             <div className={"header"}>
-                <h1>役場用動作UI</h1>
-                <ColorToggleButton content={content} setContent={setContent} />
+                {/*<h1>役場用動作UI</h1>*/}
             </div>
+            <ColorToggleButton content={content} setContent={setContent} />
             {content ? <MainApp /> : <ListApp />} {/* MainApp か List のいずれかを表示 */}
         </Paper>
     );
