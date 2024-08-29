@@ -124,7 +124,7 @@ const ListApp: React.FC = () => {
             </div>
 
             <table border={1}>
-                <tbody>
+                <tbody className="citizentable">
                     {users.map((user) => (
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>

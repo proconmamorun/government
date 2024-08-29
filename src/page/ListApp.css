@@ -1,4 +1,4 @@
-  .name-order {
+  .name-order { /*名前で並べる*/
     display: frex;
     justify-content: center;
     gap: 50px;
@@ -37,19 +37,22 @@
   }
 
   .username {
-    padding-right: 50px;
-    width: 235px;
+    width: 16vw;
+    height: 6vh;
   }
   
   .usermail {
-    padding-right: 50px;
-    width: 367px;
+    width: 25vw;
+    height: 6vh;
   }
   
   .usersafety {
-    width: 367px;
+    width: 25vw;
+    height: 6vh;
   }
 
   button {
     border: none;
   }
+
+  

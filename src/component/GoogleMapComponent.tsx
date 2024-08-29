@@ -77,7 +77,7 @@ const GoogleMapComponent: React.FC = () => {
         </GoogleMap>
         {clickPosition && (
             <div>
-              Clicked Position: Lat: {clickPosition.lat}, Lng: {clickPosition.lng}
+              Clicked Position: Lng: {clickPosition.lng}, Lat: {clickPosition.lat}
             </div>
         )}
       </div>
