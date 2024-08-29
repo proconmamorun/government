@@ -8,15 +8,15 @@ import InputwithIcon from '../component/InputwithIcon';
 type Users = {
     id: string;
     name: string;
-    mail: string;
     safety: string;
+    position: string;
 };
 
 interface ListFigure {
     id: string;
     name?: string;
-    mail?: string;
     safety?: string;
+    position?: string;
 }
 
 const ListApp: React.FC = () => {
@@ -24,8 +24,8 @@ const ListApp: React.FC = () => {
     const [figure, setFigure] = useState<ListFigure>({
         id: '',
         name: '',
-        mail: '',
         safety: '',
+        position: '',
     });
 
     const handleDelete = async (id: string) => {
@@ -59,15 +59,15 @@ const ListApp: React.FC = () => {
             try {
                 await addDoc(collection(db, "users"), {
                     name: figure.name,
-                    mail: figure.mail,
                     safety: figure.safety,
+                    position: figure.position,
                 });
                 fetchUsersData();
                 setFigure({
                     id: '',
                     name: '',
-                    mail: '',
                     safety: '',
+                    position: '',
                 });
 
                 alert("追加しました");
@@ -105,19 +105,19 @@ const ListApp: React.FC = () => {
                     />
                 </label>
                 <label>
-                    メールアドレス: {" "}
-                    <input
-                        type="text"
-                        value={figure.mail}
-                        onChange={(event) => handleInputChange(event, 'mail')}
-                    />
-                </label>
-                <label>
-                    危険度: {" "}
+                    安否情報: {" "}
                     <input
                         type="text"
                         value={figure.safety}
                         onChange={(event) => handleInputChange(event, 'safety')}
+                    />
+                </label>
+                <label>
+                    位置情報: {" "}
+                    <input
+                        type="text"
+                        value={figure.position}
+                        onChange={(event) => handleInputChange(event, 'position')}
                     />
                 </label>
                 <button onClick={() => handleAdd()}>追加</button>
@@ -128,8 +128,8 @@ const ListApp: React.FC = () => {
                     {users.map((user) => (
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>
-                            <td className="usermail">{user.mail}</td>
                             <td className="usersafety">{user.safety}</td>
+                            <td className="userposition">{user.position}</td>
                             <td>
                                 <button onClick={() => handleDelete(user.id)}>削除</button>
                             </td>

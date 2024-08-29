@@ -78,21 +78,16 @@ const MainApp: React.FC = () => {
                     longitude: parseFloat(figure.longitude.toString()),
                     dangerlevel: figure.dangerlevel,
                     dangerkinds: figure.dangerkinds
-                }
-                await addDoc(collection(db, "positions"), {
+                };
+                await addDoc(collection(db, "positions"), newFigure);
+                fetchPositionsData();
+                setFigure({
                     latitude: figure.latitude,
                     longitude: figure.longitude,
                     dangerlevel: figure.dangerlevel,
                     dangerkinds: figure.dangerkinds,
                 });
-                fetchPositionsData();
-                setFigure({
-                    latitude: 0,
-                    longitude: 0,
-                    dangerlevel: 0,
-                    dangerkinds: 0
-                });
-
+                
                 alert("追加しました");
             } catch (error) {
                 alert("失敗しました");
@@ -117,7 +112,7 @@ const MainApp: React.FC = () => {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
             ...figure,
-            [field]: event.target.valueAsNumber || 0 //入力が無効の場合
+            [field]: isNaN(event.target.valueAsNumber) ? 0 : event.target.valueAsNumber//入力が無効の場合
         });
     };
 
