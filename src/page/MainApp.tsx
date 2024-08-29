@@ -8,6 +8,7 @@ import { MapContext } from '@react-google-maps/api';
 import { GOOGLE_MAPS_API_KEY } from '../component/config';
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { DirectionsService, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
+import { initializeApp } from 'firebase/app';
 
 type Position = {
     id: string;

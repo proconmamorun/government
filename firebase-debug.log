@@ -1,0 +1,102 @@
+[debug] [2024-08-29T11:47:49.946Z] ----------------------------------------------------------------------
+[debug] [2024-08-29T11:47:49.948Z] Command:       /opt/homebrew/Cellar/node/22.3.0/bin/node /opt/homebrew/bin/firebase init
+[debug] [2024-08-29T11:47:49.948Z] CLI Version:   13.13.3
+[debug] [2024-08-29T11:47:49.948Z] Platform:      darwin
+[debug] [2024-08-29T11:47:49.949Z] Node Version:  v22.3.0
+[debug] [2024-08-29T11:47:49.949Z] Time:          Thu Aug 29 2024 20:47:49 GMT+0900 (日本標準時)
+[debug] [2024-08-29T11:47:49.949Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-29T11:47:49.954Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-29T11:47:49.954Z] > authorizing via signed-in user (xiadaoxia77@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/summer/Documents/government
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-08-29T11:47:59.596Z] > refreshing access token with scopes: []
+[debug] [2024-08-29T11:47:59.603Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-08-29T11:47:59.603Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-08-29T11:47:59.887Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-08-29T11:47:59.887Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-08-29T11:47:59.927Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-08-29T11:48:00.548Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-08-29T11:48:00.549Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project mamorun-loc-6f5ee (mamorun-loc) 
+[info] 
+=== Database Setup
+[info] i  database: ensuring required API firebasedatabase.googleapis.com is enabled... 
+[debug] [2024-08-29T11:48:58.060Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [none]
+[debug] [2024-08-29T11:48:58.060Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/mamorun-loc-6f5ee
+[debug] [2024-08-29T11:48:58.675Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com 200
+[debug] [2024-08-29T11:48:58.676Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [omitted]
+[warn] ⚠  database: missing required API firebasedatabase.googleapis.com. Enabling now... 
+[debug] [2024-08-29T11:48:58.684Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com:enable [none]
+[debug] [2024-08-29T11:48:58.684Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com:enable x-goog-quota-user=projects/mamorun-loc-6f5ee
+[debug] [2024-08-29T11:48:59.283Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com:enable 200
+[debug] [2024-08-29T11:48:59.283Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com:enable [omitted]
+[debug] [2024-08-29T11:49:09.291Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [none]
+[debug] [2024-08-29T11:49:09.292Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/mamorun-loc-6f5ee
+[debug] [2024-08-29T11:49:10.366Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com 200
+[debug] [2024-08-29T11:49:10.367Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [omitted]
+[info] ✔  database: required API firebasedatabase.googleapis.com is enabled 
+[info] 
+[debug] [2024-08-29T11:49:10.375Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee [none]
+[debug] [2024-08-29T11:49:10.784Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee 200
+[debug] [2024-08-29T11:49:10.784Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee {"projectId":"mamorun-loc-6f5ee","projectNumber":"757624437764","displayName":"mamorun-loc","name":"projects/mamorun-loc-6f5ee","resources":{"hostingSite":"mamorun-loc-6f5ee"},"state":"ACTIVE","etag":"1_dc6e92f0-e432-449e-a6f8-7740e87c1591"}
+[debug] [2024-08-29T11:49:26.931Z] ----------------------------------------------------------------------
+[debug] [2024-08-29T11:49:26.935Z] Command:       /opt/homebrew/Cellar/node/22.3.0/bin/node /opt/homebrew/bin/firebase init
+[debug] [2024-08-29T11:49:26.936Z] CLI Version:   13.13.3
+[debug] [2024-08-29T11:49:26.936Z] Platform:      darwin
+[debug] [2024-08-29T11:49:26.936Z] Node Version:  v22.3.0
+[debug] [2024-08-29T11:49:26.936Z] Time:          Thu Aug 29 2024 20:49:26 GMT+0900 (日本標準時)
+[debug] [2024-08-29T11:49:26.936Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-29T11:49:26.941Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-29T11:49:26.942Z] > authorizing via signed-in user (xiadaoxia77@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/summer/Documents/government
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-08-29T11:51:24.466Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-08-29T11:51:25.158Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-08-29T11:51:25.159Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project mamorun-loc-6f5ee (mamorun-loc) 
+[info] 
+=== Database Setup
+[info] i  database: ensuring required API firebasedatabase.googleapis.com is enabled... 
+[debug] [2024-08-29T11:54:43.234Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [none]
+[debug] [2024-08-29T11:54:43.235Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/mamorun-loc-6f5ee
+[debug] [2024-08-29T11:54:44.372Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com 200
+[debug] [2024-08-29T11:54:44.373Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/mamorun-loc-6f5ee/services/firebasedatabase.googleapis.com [omitted]
+[info] ✔  database: required API firebasedatabase.googleapis.com is enabled 
+[info] 
+[debug] [2024-08-29T11:54:44.374Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee [none]
+[debug] [2024-08-29T11:54:44.708Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee 200
+[debug] [2024-08-29T11:54:44.709Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mamorun-loc-6f5ee {"projectId":"mamorun-loc-6f5ee","projectNumber":"757624437764","displayName":"mamorun-loc","name":"projects/mamorun-loc-6f5ee","resources":{"hostingSite":"mamorun-loc-6f5ee"},"state":"ACTIVE","etag":"1_dc6e92f0-e432-449e-a6f8-7740e87c1591"}
