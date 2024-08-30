@@ -37,22 +37,24 @@ const center = {
 
 const MainApp: React.FC = () => {
     const [positions, setPositions] = useState<Position[]>([]);
+    const [markerPosition, setMarkerPosition] =useState<google.maps.LatLngLiteral | null>(null);
     const [figure, setFigure] = useState<Figure>({
         latitude: 0,
         longitude: 0,
         dangerlevel: 0,
         dangerkinds: 0
     });
-    const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null);
+    {/*const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-    const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | null>(null); // 座標状態追加
+const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | null>(null); // 座標状態追加*/}
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!
     });
 
+    //ピンの情報を取得
     const fetchPositionsData = async () => {
         try {
         const positionsCollection = collection(db, "positions");
@@ -71,7 +73,7 @@ const MainApp: React.FC = () => {
         fetchPositionsData();
     }, []);
 
-    const handleAdd = async () => {
+    {/*const handleAdd = async () => {
         if (window.confirm("追加してもよろしいですか？")) {
             try {
                 const newFigure = {
@@ -108,33 +110,46 @@ const MainApp: React.FC = () => {
                 console.error("Error adding document: ", error);
             }
         }
-    };
+    };*/}
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
             ...figure,
-            [field]: isNaN(event.target.valueAsNumber) ? 0 : event.target.valueAsNumber//入力が無効の場合
+            [field]: parseInt(event.target.value)
         });
     };
 
-    const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    {/*const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           setDirectionsResponse(result);
         } else {
           setError(`Directions request failed due to ${status}`);
         }
-      }, []);
+      }, []);*/}
 
-      const handleMapClick = useCallback((event: google.maps.MapMouseEvent) => {
+      const handleMapClick = useCallback(async (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
           const position = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
           };
           setMarkerPosition(position);
-          setClickPosition(position); // クリック位置を更新
+          //setClickPosition(position); // クリック位置を更新
+
+          try {
+            const nerFigure = {
+                latitude: position.lat,
+                longitude: position.lng,
+                dangerlevel: figure.dangerlevel,
+                dangerkinds: figure.dangerkinds
+            };
+            await addDoc(collection(db, "positions"), nerFigure);
+            fetchPositionsData();
+          }catch (error) {
+            console.error("Error adding document: ", error);
+          }
         }
-      }, []);
+      }, [figure]);
     
       if (!isLoaded) {
         return <div>Loading...</div>;
@@ -149,7 +164,7 @@ const MainApp: React.FC = () => {
                 zoom = {15}
                 onClick={handleMapClick}
             >
-                <DirectionsService
+                {/*<DirectionsService
               options={{
                 destination: 'Kamiyama, Tokushima, Japan',
                 origin: 'Tokushima, Japan',
@@ -163,7 +178,7 @@ const MainApp: React.FC = () => {
                     directions: directionsResponse
                   }}
               />
-          )}
+                )}*/}
                 {positions.map((position) => (
                     <Marker 
                         key = {position.id}
@@ -173,10 +188,10 @@ const MainApp: React.FC = () => {
                 {markerPosition && (
               <Marker position={markerPosition} />
           )}
-          {error && <div>{error}</div>}
+          {/*{error && <div>{error}</div>}*/}
             </GoogleMap>
         </LoadScript>
-        {clickPosition && (
+        {/*{clickPosition && (
             <div>
               Clicked Position: Lng: {clickPosition.lng}, Lat: {clickPosition.lat}
             </div>
@@ -188,7 +203,7 @@ const MainApp: React.FC = () => {
             handleDelete={handleDelete}
             positions={positions}
          />
-         {error && <div>(error)</div>}
+        {error && <div>(error)</div>}*/}
          </div>
     );
 };

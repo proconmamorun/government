@@ -51,7 +51,7 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
             <div>
                 <h2>位置</h2>
                 <div>
-                <label>
+                {/*<label>
                         経度: {" "}
                         <input
                             type="number"
@@ -66,7 +66,7 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                             value={figure.latitude}
                             onChange={(event) => handleInputChange(event, 'latitude')}
                         />
-                    </label>
+    </label>*/}
                     <label>
                         危険度: {" "}
                         <input
@@ -90,8 +90,8 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                     <tbody>
                         {positions.map((position) => (
                             <tr key={position.id}>
-                                <td>{position.longitude}</td>
-                                <td>{position.latitude}</td>
+                                {/*<td>{position.longitude}</td>
+                                <td>{position.latitude}</td>*/}
                                 <td>{position.dangerlevel}</td>
                                 <td>{position.dangerkinds}</td>
                                 <td>
