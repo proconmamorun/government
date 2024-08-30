@@ -1,4 +1,4 @@
-import React from 'react';
+{/*import React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -45,7 +45,7 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                     </Stack>
                 </div>
                 <div className="item">
-                    {/*<GoogleMapComponent />*/}
+                    {/*<GoogleMapComponent />
                 </div>
             </div>
             <div>
@@ -66,7 +66,7 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                             value={figure.latitude}
                             onChange={(event) => handleInputChange(event, 'latitude')}
                         />
-    </label>*/}
+    </label>
                     <label>
                         危険度: {" "}
                         <input
@@ -90,8 +90,8 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                     <tbody>
                         {positions.map((position) => (
                             <tr key={position.id}>
-                                {/*<td>{position.longitude}</td>
-                                <td>{position.latitude}</td>*/}
+                                <td>{position.longitude}</td>
+                                <td>{position.latitude}</td>
                                 <td>{position.dangerlevel}</td>
                                 <td>{position.dangerkinds}</td>
                                 <td>
@@ -107,4 +107,6 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
     );
 };
 
-export default Map;
+export default Map;*/}
+
+export {};

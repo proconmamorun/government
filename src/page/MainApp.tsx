@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback} from 'react';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import Map from '../component/Map';
 import './MainApp.css';
 import '../component/GoogleMapComponent';
 import { MapContext } from '@react-google-maps/api';
@@ -9,6 +8,7 @@ import { GOOGLE_MAPS_API_KEY } from '../component/config';
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { DirectionsService, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
 import { initializeApp } from 'firebase/app';
+import { InputOutlined } from '@mui/icons-material';
 
 type Position = {
     id: string;
@@ -34,6 +34,22 @@ const center = {
     lat: 33.96725162, 
     lng: 134.35047543
 };
+
+const getMarkerColor = (dangerlevel: number) => {
+    if (dangerlevel >= 5) {
+        return 'purple';
+    }else if (dangerlevel === 4) {
+        return 'orange';
+    }else if (dangerlevel === 3) {
+        return 'pink';
+    }else if (dangerlevel === 2) {
+        return 'yellow';
+    }else if (dangerlevel === 1) {
+        return 'yellowgreen';
+    }else {
+        return 'white';
+    }
+}
 
 const MainApp: React.FC = () => {
     const [positions, setPositions] = useState<Position[]>([]);
@@ -73,7 +89,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
         fetchPositionsData();
     }, []);
 
-    const handleAdd = async () => {
+    {/*const handleAdd = async () => {
         if (window.confirm("追加してもよろしいですか？")) {
             try {
                 const newFigure = {
@@ -110,7 +126,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                 console.error("Error adding document: ", error);
             }
         }
-    };
+    };*/}
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
@@ -145,7 +161,13 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
             };
             await addDoc(collection(db, "positions"), nerFigure);
             fetchPositionsData();
-          }catch (error) {
+            setFigure({
+                latitude: 0,
+                longitude: 0,
+                dangerlevel: 0,
+                dangerkinds: 0
+            });
+            }catch (error) {
             console.error("Error adding document: ", error);
           }
         }
@@ -182,6 +204,14 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                     <Marker 
                         key = {position.id}
                         position = {{lat: position.latitude, lng: position.longitude}} 
+                        icon={{
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 10,
+                            fillColor: getMarkerColor(position.dangerlevel),
+                            fillOpacity: 1,
+                            strokeWeight: 2,
+                            strokeColor: 'white'
+                        }}
                     />
                 ))}
                 {markerPosition && (
@@ -194,13 +224,44 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
               Clicked Position: Lng: {clickPosition.lng}, Lat: {clickPosition.lat}
             </div>
         )}*/}
-        <Map 
+        <div>
+            <h2>位置情報の追加</h2>
+            <label>
+                危険度:{" "}
+                <input
+                    type="number"
+                    value={figure.dangerlevel}
+                    onChange={(event) => handleInputChange(event, 'dangerlevel')}
+                />
+            </label>
+            <label>
+                危険の種類:{" "}
+                <input
+                    type="number"
+                    value={figure.dangerkinds}
+                    onChange={(event) => handleInputChange(event,'dangerkinds')}
+                />
+            </label>
+    </div>
+    <table>
+                    <tbody>
+                        {positions.map((position) => (
+                            <tr key={position.id}>
+                                {/*<td>{position.longitude}</td>
+                                <td>{position.latitude}</td>*/}
+                                <td>{position.dangerlevel}</td>
+                                <td>{position.dangerkinds}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+        {/*<Map 
             figure={figure}
             handleInputChange={handleInputChange}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             positions={positions}
-         />
+        />
         {/*{error && <div>(error)</div>}*/}
          </div>
     );
