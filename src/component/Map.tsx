@@ -41,11 +41,11 @@ const Map: React.FC<MapProps> = ({ figure, handleInputChange, handleAdd, handleD
                     <Stack spacing={2} direction="column">
                         <Button variant="contained" size="large" className="map-button">町民位置情報</Button>
                         <Button variant="contained" size="large" className="danger-map-button">危険箇所情報</Button>
-                        <Button variant="contained" size="large" className="rescue-team-button">救助隊位置情報</Button>
+                        <Button variant="contained" size="large" className="rescue-team-button"></Button>
                     </Stack>
                 </div>
                 <div className="item">
-                    <GoogleMapComponent />
+                    {/*<GoogleMapComponent />*/}
                 </div>
             </div>
             <div>

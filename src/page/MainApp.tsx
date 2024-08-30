@@ -6,7 +6,7 @@ import './MainApp.css';
 import '../component/GoogleMapComponent';
 import { MapContext } from '@react-google-maps/api';
 import { GOOGLE_MAPS_API_KEY } from '../component/config';
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { DirectionsService, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
 import { initializeApp } from 'firebase/app';
 
@@ -73,7 +73,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
         fetchPositionsData();
     }, []);
 
-    {/*const handleAdd = async () => {
+    const handleAdd = async () => {
         if (window.confirm("追加してもよろしいですか？")) {
             try {
                 const newFigure = {
@@ -110,7 +110,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                 console.error("Error adding document: ", error);
             }
         }
-    };*/}
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
@@ -157,7 +157,6 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
 
     return (
         <div className="citizen_map">
-        <LoadScript googleMapsApiKey = {process.env.REACT_APP_GOOGLE_MAPS_API_KEY!}>
             <GoogleMap
                 mapContainerStyle = {containerStyle}
                 center = {center}
@@ -190,12 +189,11 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
           )}
           {/*{error && <div>{error}</div>}*/}
             </GoogleMap>
-        </LoadScript>
         {/*{clickPosition && (
             <div>
               Clicked Position: Lng: {clickPosition.lng}, Lat: {clickPosition.lat}
             </div>
-        )}
+        )}*/}
         <Map 
             figure={figure}
             handleInputChange={handleInputChange}
@@ -203,7 +201,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
             handleDelete={handleDelete}
             positions={positions}
          />
-        {error && <div>(error)</div>}*/}
+        {/*{error && <div>(error)</div>}*/}
          </div>
     );
 };
