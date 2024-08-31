@@ -149,7 +149,8 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
           };
-          setMarkerPosition(position);
+
+          //setMarkerPosition(position);
           //setClickPosition(position); // クリック位置を更新
 
           try {
@@ -214,10 +215,10 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                         }}
                     />
                 ))}
-                {markerPosition && (
+                {/*{markerPosition && (
               <Marker position={markerPosition} />
           )}
-          {/*{error && <div>{error}</div>}*/}
+            {error && <div>{error}</div>}*/}
             </GoogleMap>
         {/*{clickPosition && (
             <div>
