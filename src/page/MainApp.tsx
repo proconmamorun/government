@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback} from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, doc, getFirestore } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './MainApp.css';
 import '../component/GoogleMapComponent';
@@ -60,10 +60,6 @@ const MainApp: React.FC = () => {
         dangerlevel: 0,
         dangerkinds: 0
     });
-    {/*const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | null>(null); // 座標状態追加*/}
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -88,80 +84,31 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
     useEffect(() => {
         fetchPositionsData();
     }, []);
-
-    {/*const handleAdd = async () => {
-        if (window.confirm("追加してもよろしいですか？")) {
-            try {
-                const newFigure = {
-                    latitude: parseFloat(figure.latitude.toString()),
-                    longitude: parseFloat(figure.longitude.toString()),
-                    dangerlevel: figure.dangerlevel,
-                    dangerkinds: figure.dangerkinds
-                };
-                await addDoc(collection(db, "positions"), newFigure);
-                fetchPositionsData();
-                setFigure({
-                    latitude: figure.latitude,
-                    longitude: figure.longitude,
-                    dangerlevel: figure.dangerlevel,
-                    dangerkinds: figure.dangerkinds,
-                });
-                
-                alert("追加しました");
-            } catch (error) {
-                alert("失敗しました");
-                console.error("Error adding document: ", error);
-            }
-        }
-    };
-
-    const handleDelete = async (id: string) => {
-        if (window.confirm("削除してもよろしいですか？")) {
-            try {
-                await deleteDoc(doc(db, "positions", id));
-                fetchPositionsData();
-                alert("削除しました");
-            } catch (error) {
-                alert("失敗しました");
-                console.error("Error adding document: ", error);
-            }
-        }
-    };*/}
-
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
             ...figure,
             [field]: parseInt(event.target.value)
         });
     };
-
-    {/*const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
-        if (status === 'OK' && result) {
-          setDirectionsResponse(result);
-        } else {
-          setError(`Directions request failed due to ${status}`);
-        }
-      }, []);*/}
-
       const handleMapClick = useCallback(async (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
           const position = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
           };
-
-          //setMarkerPosition(position);
-          //setClickPosition(position); // クリック位置を更新
-
           try {
-            const nerFigure = {
+            const newFigure = {
                 latitude: position.lat,
                 longitude: position.lng,
                 dangerlevel: figure.dangerlevel,
                 dangerkinds: figure.dangerkinds
             };
-            await addDoc(collection(db, "positions"), nerFigure);
-            fetchPositionsData();
+            if (newFigure.dangerlevel === 0 || newFigure.dangerkinds === 0) {
+                alert("危険度と危険の種類を設定してください");
+                return;
+            }
+            await addDoc(collection(db, "positions"), newFigure);
+            fetchPositionsData()
             setFigure({
                 latitude: 0,
                 longitude: 0,
@@ -173,8 +120,9 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
           }
         }
       }, [figure]);
-    
-      if (!isLoaded) {
+
+
+    if (!isLoaded) {
         return <div>Loading...</div>;
       }
 
@@ -186,21 +134,6 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                 zoom = {15}
                 onClick={handleMapClick}
             >
-                {/*<DirectionsService
-              options={{
-                destination: 'Kamiyama, Tokushima, Japan',
-                origin: 'Tokushima, Japan',
-                travelMode: google.maps.TravelMode.DRIVING
-              }}
-              callback={directionsCallback}
-          />
-          {directionsResponse && (
-              <DirectionsRenderer
-                  options={{
-                    directions: directionsResponse
-                  }}
-              />
-                )}*/}
                 {positions.map((position) => (
                     <Marker 
                         key = {position.id}
@@ -215,16 +148,7 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                         }}
                     />
                 ))}
-                {/*{markerPosition && (
-              <Marker position={markerPosition} />
-          )}
-            {error && <div>{error}</div>}*/}
             </GoogleMap>
-        {/*{clickPosition && (
-            <div>
-              Clicked Position: Lng: {clickPosition.lng}, Lat: {clickPosition.lat}
-            </div>
-        )}*/}
         <div>
             <h2>位置情報の追加</h2>
             <label>
@@ -248,22 +172,12 @@ const [clickPosition, setClickPosition] = useState<google.maps.LatLngLiteral | n
                     <tbody>
                         {positions.map((position) => (
                             <tr key={position.id}>
-                                {/*<td>{position.longitude}</td>
-                                <td>{position.latitude}</td>*/}
                                 <td>{position.dangerlevel}</td>
                                 <td>{position.dangerkinds}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-        {/*<Map 
-            figure={figure}
-            handleInputChange={handleInputChange}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            positions={positions}
-        />
-        {/*{error && <div>(error)</div>}*/}
          </div>
     );
 };
