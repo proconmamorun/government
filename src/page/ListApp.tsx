@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import './ListApp.css';
-import InputwithIcon from '../component/InputwithIcon';
+import './MainApp';
+import { containerStyle, center } from './MainApp';
+import { GoogleMap, Marker } from "@react-google-maps/api";
+import '../component/GoogleMapComponent';
 
 type Users = {
     id: string;
@@ -10,8 +12,16 @@ type Users = {
     safety: string;
 };
 
+type Position = {
+    id: string;
+    latitude: number;
+    longitude: number;
+    safety: string;
+}
+
 const ListApp: React.FC = () => {
     const [users, setUsers] = useState<Users[]>([]);
+    const [positions, setPositions] = useState<Position[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     
     const fetchUsersData = async () => {
@@ -30,8 +40,23 @@ const ListApp: React.FC = () => {
     
     console.log(...users);
 
+    const fetchPositionsData = async () => {
+        try {
+        const positionsCollection = collection(db, "positions");
+        const positionsSnapshot = await getDocs(positionsCollection);
+        const positionsList = positionsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        })) as Position[];
+        setPositions(positionsList);
+    } catch (error) {
+        console.error("Error fetching positions: ", error);
+    }
+};
+
     useEffect(() => {
         fetchUsersData();
+        fetchPositionsData();
     }, []);
 
     const handleAlphabeticalOrder = () => {
@@ -69,30 +94,42 @@ const ListApp: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody className="citizentable">
-                    {users.map((user) => (
+                    {searchTerm ? (
+                        filteredUsers.length > 0 ? (
+                            filteredUsers.map(user => (
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>
                             <td className="usersafety">{user.safety}</td>
                         </tr>
-                    ))}
-                </tbody>
-                <tbody>
-                    {filteredUsers.length > 0 ? (
-                        filteredUsers.map(user => (
-                            <tr key={user.id}>
-                                <td>{user.name}</td>
-                                <td>{user.safety}</td>
-                            </tr>
-                        ))
-                    ) : (
+                    ))
+                ) : (
                         <tr>
                             <td colSpan={3}>該当する町民は見つかりません。</td>
                         </tr>
-                    )}
+                )
+                ) : (
+                    users.map(user => (
+                        <tr key={user.id}>
+                            <td className="username">{user.name}</td>
+                            <td className="usersafety">{user.safety}</td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </table>
-
-            <InputwithIcon />
+            <GoogleMap
+                mapContainerStyle = {containerStyle}
+                center = {center}
+                zoom = {15}
+                //onClick={handleMapClick}
+            >
+                {positions.map((position) => (
+                    <Marker 
+                        key = {position.id}
+                        position = {{lat: position.latitude, lng: position.longitude}} 
+                    />
+                ))}
+            </GoogleMap>
         </div>
     );
 };

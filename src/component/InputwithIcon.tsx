@@ -1,4 +1,4 @@
-import React from 'react';
+{/*import React from 'react';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -25,4 +25,6 @@ const InputwithIcon: React.FC = () => {
     );
 };
 
-export default InputwithIcon;
+export default InputwithIcon;*/}
+
+export {};

@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from './config';
 
 const containerStyle = {
   width: '100%',

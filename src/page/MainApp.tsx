@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useCallback} from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './MainApp.css';
 import '../component/GoogleMapComponent';
-import { MapContext } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from '../component/config';
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { DirectionsService, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
-import { initializeApp } from 'firebase/app';
-import { InputOutlined } from '@mui/icons-material';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 type Position = {
     id: string;
@@ -68,12 +64,14 @@ const MainApp: React.FC = () => {
     useEffect(() => {
         fetchPositionsData();
     }, []);
+
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof Figure) => {
         setFigure({
             ...figure,
             [field]: parseInt(event.target.value)
         });
     };
+
       const handleMapClick = useCallback(async (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
           const position = {
@@ -149,18 +147,9 @@ const MainApp: React.FC = () => {
                 />
             </label>
     </div>
-    {/*<table>
-                    <tbody>
-                        {positions.map((position) => (
-                            <tr key={position.id}>
-                                <td>{position.dangerlevel}</td>
-                                <td>{position.dangerkinds}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                        </table>*/}
          </div>
     );
 };
 
 export default MainApp;
+export { containerStyle, center };
