@@ -42,7 +42,7 @@ const ListApp: React.FC = () => {
 
     const fetchPositionsData = async () => {
         try {
-        const positionsCollection = collection(db, "positions");
+        const positionsCollection = collection(db, "ume");
         const positionsSnapshot = await getDocs(positionsCollection);
         const positionsList = positionsSnapshot.docs.map(doc => ({
             id: doc.id,
@@ -72,6 +72,14 @@ const ListApp: React.FC = () => {
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
         user.safety.toLowerCase().includes(searchTerm.toLowerCase()) 
     );
+
+    {/*const getMarkerColor = (safety: string) => {
+        if (safety === "救助が必要") {
+            return purple;
+        } else {
+            return undefined;
+        }
+    };*/}
 
     return (
         <div>
