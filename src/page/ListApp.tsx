@@ -6,80 +6,75 @@ import { containerStyle, center } from './MainApp';
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import '../component/GoogleMapComponent';
 
-type Users = {
+type UserWithPosition = {
     id: string;
-    name: string;
-    safety: string;
-};
-
-type Position = {
-    id: string;
+    name?: string;
+    safety?: string;
     latitude: number;
     longitude: number;
-    safety: string;
+    district: string;
 }
 
+const 
+
 const ListApp: React.FC = () => {
-    const [users, setUsers] = useState<Users[]>([]);
-    const [positions, setPositions] = useState<Position[]>([]);
+    const [usersWithPositions, setUsersWithPositions] = useState<UserWithPosition[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [filterDistrict, setFilterDistrict] = useState<string>("");
     
-    const fetchUsersData = async () => {
+    const fetchUsersWithPositionsData = async () => {
         try {
             const usersCollection = collection(db, "citizen");
             const usersSnapshot = await getDocs(usersCollection);
             const usersList = usersSnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
-            })) as Users[];
-            setUsers(usersList);
-        } catch (error) {
-            console.error("データの取得に失敗しました: ", error);
-        }
-    };
-    
-    console.log(...users);
+            })) as UserWithPosition[];
 
-    const fetchPositionsData = async () => {
-        try {
-        const positionsCollection = collection(db, "ume");
-        const positionsSnapshot = await getDocs(positionsCollection);
-        const positionsList = positionsSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        })) as Position[];
-        setPositions(positionsList);
-    } catch (error) {
-        console.error("Error fetching positions: ", error);
+            console.log("Fetched Users With Positions:", usersList);
+
+        const sortedUsers = usersList.sort((a, b) => {
+        if (a.safety === "救助が必要" && b.safety !== "救助が必要") return -1;
+        if (a.safety !== "救助が必要" && b.safety === "救助が必要") return 1;
+        if (a.safety === "無事" && b.safety !== "無事") return -1;
+        if (a.safety !== "無事" && b.safety === "無事") return 1;
+        return 0;
+    });
+        setUsersWithPositions(sortedUsers);
+    }catch (error) {
+        console.error("データの取得に失敗しました: ", error);
     }
-};
+    };
 
     useEffect(() => {
-        fetchUsersData();
-        fetchPositionsData();
+        fetchUsersWithPositionsData();
     }, []);
-
-    const handleAlphabeticalOrder = () => {
-        const sortedUsers = [...users].sort((a, b) => a.name.localeCompare(b.name, 'ja'));
-        setUsers(sortedUsers);
-    };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    const filteredUsers = users.filter(user => 
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        user.safety.toLowerCase().includes(searchTerm.toLowerCase()) 
-    );
+    const handleFilterByDistrict = (district: string) => {
+        setFilterDistrict(district);
+    };
 
-    {/*const getMarkerColor = (safety: string) => {
+    const filteredUsers = usersWithPositions.filter(user => {
+        return (
+            (!filterDistrict || user.district === filterDistrict) &&
+            ((user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
+            (user.safety && user.safety.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+});
+
+    {/*
+    const getMarkerColor = (safety: string) => {
         if (safety === "救助が必要") {
-            return purple;
+            return 'purple';
         } else {
             return undefined;
         }
-    };*/}
+    };
+*/}
 
     return (
         <div>
@@ -92,8 +87,20 @@ const ListApp: React.FC = () => {
                     onChange={handleSearchChange}
                     placeholder="検索" 
                 />
-                <button className="alpha-order" onClick={handleAlphabeticalOrder}>五十音順</button>
             </div>
+            <div className="safetydistrict">
+                <label>安否</label>
+                <button onClick={() => handleFilterByDistrict("神領")}>神領</button>
+                <button onClick={() => handleFilterByDistrict("上分")}>上分</button>
+                <button onClick={() => handleFilterByDistrict("下分")}>下分</button>
+                <button onClick={() => handleFilterByDistrict("阿野")}>阿野</button>
+                <button onClick={() => handleFilterByDistrict("鬼籠野")}>鬼籠野</button>
+            </div>
+            <div className="mapdistrict">
+                <label>地図</label>
+                
+            </div>
+
             <table border={1}>
                 <thead>
                     <tr>
@@ -102,8 +109,7 @@ const ListApp: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody className="citizentable">
-                    {searchTerm ? (
-                        filteredUsers.length > 0 ? (
+                        {filteredUsers.length > 0 ? (
                             filteredUsers.map(user => (
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>
@@ -114,24 +120,16 @@ const ListApp: React.FC = () => {
                         <tr>
                             <td colSpan={3}>該当する町民は見つかりません。</td>
                         </tr>
-                )
-                ) : (
-                    users.map(user => (
-                        <tr key={user.id}>
-                            <td className="username">{user.name}</td>
-                            <td className="usersafety">{user.safety}</td>
-                        </tr>
-                    ))
                 )}
                 </tbody>
             </table>
+
             <GoogleMap
                 mapContainerStyle = {containerStyle}
                 center = {center}
                 zoom = {15}
-                //onClick={handleMapClick}
             >
-                {positions.map((position) => (
+                {filteredUsers.map((position) => (
                     <Marker 
                         key = {position.id}
                         position = {{lat: position.latitude, lng: position.longitude}} 
