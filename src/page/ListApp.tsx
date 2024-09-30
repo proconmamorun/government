@@ -15,12 +15,20 @@ type UserWithPosition = {
     district: string;
 }
 
-const 
+const mapchange: { [key: string]: { lat: number; lng: number } } = {
+    "神領": { lat: 33.96725162, lng: 134.35047543},
+    "上分": { lat: 33.964313, lng: 134.2590853},
+    "下分": { lat: 33.9598865, lng: 134.3070941},
+    "阿野": { lat: 34.005311, lng: 134.355696},
+    "鬼籠野": { lat: 33.9869602, lng: 134.371021}
+};
 
 const ListApp: React.FC = () => {
     const [usersWithPositions, setUsersWithPositions] = useState<UserWithPosition[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [filterDistrict, setFilterDistrict] = useState<string>("");
+    const [mapCenter, setMapCenter] = useState<{ lat: number, lng: number }>(center);
+    const [isSafetyView, setIsSafetyView] = useState<boolean>(false);
     
     const fetchUsersWithPositionsData = async () => {
         try {
@@ -56,6 +64,12 @@ const ListApp: React.FC = () => {
 
     const handleFilterByDistrict = (district: string) => {
         setFilterDistrict(district);
+        setIsSafetyView(false);
+
+        const location = mapchange[district];
+        if (location) {
+            setMapCenter(location);
+        }
     };
 
     const filteredUsers = usersWithPositions.filter(user => {
@@ -98,7 +112,11 @@ const ListApp: React.FC = () => {
             </div>
             <div className="mapdistrict">
                 <label>地図</label>
-                
+                <button onClick={() => handleFilterByDistrict("神領")}>神領</button>
+                <button onClick={() => handleFilterByDistrict("上分")}>上分</button>
+                <button onClick={() => handleFilterByDistrict("下分")}>下分</button>
+                <button onClick={() => handleFilterByDistrict("阿野")}>阿野</button>
+                <button onClick={() => handleFilterByDistrict("鬼籠野")}>鬼籠野</button>
             </div>
 
             <table border={1}>
@@ -118,15 +136,16 @@ const ListApp: React.FC = () => {
                     ))
                 ) : (
                         <tr>
-                            <td colSpan={3}>該当する町民は見つかりません。</td>
+                            <td colSpan={2}>該当する町民は見つかりません。</td>
                         </tr>
                 )}
                 </tbody>
             </table>
-
+            
+        {!isSafetyView && (
             <GoogleMap
                 mapContainerStyle = {containerStyle}
-                center = {center}
+                center = {mapCenter}
                 zoom = {15}
             >
                 {filteredUsers.map((position) => (
@@ -136,6 +155,7 @@ const ListApp: React.FC = () => {
                     />
                 ))}
             </GoogleMap>
+        )}
         </div>
     );
 };
