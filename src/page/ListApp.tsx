@@ -8,22 +8,15 @@ type Users = {
     id: string;
     name: string;
     safety: string;
-    position: string;
 };
-
-interface ListFigure {
-    id: string;
-    name?: string;
-    safety?: string;
-    position?: string;
-}
 
 const ListApp: React.FC = () => {
     const [users, setUsers] = useState<Users[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>("");
     
     const fetchUsersData = async () => {
         try {
-            const usersCollection = collection(db, "users");
+            const usersCollection = collection(db, "citizen");
             const usersSnapshot = await getDocs(usersCollection);
             const usersList = usersSnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -41,18 +34,38 @@ const ListApp: React.FC = () => {
         fetchUsersData();
     }, []);
 
+    const handleAlphabeticalOrder = () => {
+        const sortedUsers = [...users].sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+        setUsers(sortedUsers);
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const filteredUsers = users.filter(user => 
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        user.safety.toLowerCase().includes(searchTerm.toLowerCase()) 
+    );
+
     return (
         <div>
             <div className="name-order">
-                <button className="alpha-order">五十音順</button>
-                <button className="old-order">年齢順</button>
+                <label htmlFor="search">検索: </label>
+                <input
+                    id="search"
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    placeholder="検索" 
+                />
+                <button className="alpha-order" onClick={handleAlphabeticalOrder}>五十音順</button>
             </div>
             <table border={1}>
                 <thead>
                     <tr>
                         <th className="label">Name</th>
                         <th className="label">Safety</th>
-                        <th className="label">Position</th>
                     </tr>
                 </thead>
                 <tbody className="citizentable">
@@ -60,9 +73,22 @@ const ListApp: React.FC = () => {
                         <tr key={user.id}>
                             <td className="username">{user.name}</td>
                             <td className="usersafety">{user.safety}</td>
-                            <td className="userposition">{user.position}</td>
                         </tr>
                     ))}
+                </tbody>
+                <tbody>
+                    {filteredUsers.length > 0 ? (
+                        filteredUsers.map(user => (
+                            <tr key={user.id}>
+                                <td>{user.name}</td>
+                                <td>{user.safety}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={3}>該当する町民は見つかりません。</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 

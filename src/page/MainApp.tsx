@@ -35,22 +35,6 @@ const center = {
     lng: 134.35047543
 };
 
-const getMarkerColor = (dangerlevel: number) => {
-    if (dangerlevel >= 5) {
-        return 'purple';
-    }else if (dangerlevel === 4) {
-        return 'orange';
-    }else if (dangerlevel === 3) {
-        return 'pink';
-    }else if (dangerlevel === 2) {
-        return 'yellow';
-    }else if (dangerlevel === 1) {
-        return 'yellowgreen';
-    }else {
-        return 'white';
-    }
-}
-
 const MainApp: React.FC = () => {
     const [positions, setPositions] = useState<Position[]>([]);
     const [markerPosition, setMarkerPosition] =useState<google.maps.LatLngLiteral | null>(null);
@@ -138,13 +122,10 @@ const MainApp: React.FC = () => {
                     <Marker 
                         key = {position.id}
                         position = {{lat: position.latitude, lng: position.longitude}} 
-                        icon={{
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 10,
-                            fillColor: getMarkerColor(position.dangerlevel),
-                            fillOpacity: 1,
-                            strokeWeight: 2,
-                            strokeColor: 'white'
+                        label={{
+                            text: String(position.dangerlevel),
+                            fontSize: "16px",
+                            color: "black"
                         }}
                     />
                 ))}
@@ -168,7 +149,7 @@ const MainApp: React.FC = () => {
                 />
             </label>
     </div>
-    <table>
+    {/*<table>
                     <tbody>
                         {positions.map((position) => (
                             <tr key={position.id}>
@@ -177,7 +158,7 @@ const MainApp: React.FC = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                        </table>*/}
          </div>
     );
 };
