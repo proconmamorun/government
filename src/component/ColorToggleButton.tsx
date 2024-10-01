@@ -3,8 +3,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 interface ColorToggleButtonProps {
-    content: boolean;
-    setContent: React.Dispatch<React.SetStateAction<boolean>>;
+    content: number;
+    setContent: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setContent }) => {
@@ -25,11 +25,14 @@ const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setConte
             aria-label="Platform"
         >
             <ToggleButton value="map" className="mapbutton"
-                onClick={() => setContent(true)}
+                onClick={() => setContent(0)}
             >地図</ToggleButton>
             <ToggleButton value="names" className="namesbutton"
-                onClick={() => setContent(false)}
+                onClick={() => setContent(1)}
             >名簿</ToggleButton>
+            <ToggleButton value="alert" className="alertbutton"
+                onClick={() => setContent(2)}
+            >警報</ToggleButton>
         </ToggleButtonGroup>
     );
 };
