@@ -15,6 +15,14 @@ type UserWithPosition = {
     district: string;
 }
 
+type RescuePosition = {
+    id: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+    doing: string;
+}
+
 const mapchange: { [key: string]: { lat: number; lng: number } } = {
     "神領": { lat: 33.96725162, lng: 134.35047543},
     "上分": { lat: 33.964313, lng: 134.2590853},
@@ -29,6 +37,8 @@ const ListApp: React.FC = () => {
     const [filterDistrict, setFilterDistrict] = useState<string>("");
     const [mapCenter, setMapCenter] = useState<{ lat: number, lng: number }>(center);
     const [isSafetyView, setIsSafetyView] = useState<boolean>(false);
+    const [isMapView, setIsMapView] = useState<boolean>(false);
+    const [isRescueView, setIsRescueView] = useState<RescuePosition[]>([]);
     
     const fetchUsersWithPositionsData = async () => {
         try {
@@ -54,17 +64,38 @@ const ListApp: React.FC = () => {
     }
     };
 
+    const fetchRescuePositionsData = async () => {
+        try {
+            const usersCollection = collection(db, "rescue");
+            const usersSnapshot = await getDocs(usersCollection);
+            const usersList = usersSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as RescuePosition[];
+    }catch (error) {
+        console.error("データの取得に失敗しました: ", error);
+    }
+    };
+
     useEffect(() => {
         fetchUsersWithPositionsData();
+        fetchRescuePositionsData();
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    const handleFilterByDistrict = (district: string) => {
+    const handleFilterByDistrictSafety = (district: string) => {
+        setFilterDistrict(district);
+        setIsSafetyView(true);
+        setIsMapView(false);
+    };
+
+    const handleFilterByDistrictMap = (district: string) => {
         setFilterDistrict(district);
         setIsSafetyView(false);
+        setIsMapView(true);
 
         const location = mapchange[district];
         if (location) {
@@ -80,15 +111,25 @@ const ListApp: React.FC = () => {
     );
 });
 
-    {/*
-    const getMarkerColor = (safety: string) => {
+    const getMarkerIcon = (safety: string) => {
+        let color;
         if (safety === "救助が必要") {
-            return 'purple';
-        } else {
-            return undefined;
+            color = 'red';
+        }else if (safety === "無事") {
+            color = 'green';
+        }else {
+            color ='white';
         }
+
+        return {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: color,
+            fillOpacity: 1,
+            strokeColor: 'black',
+            strokeWeight: 0
+        };
     };
-*/}
 
     return (
         <div>
@@ -104,21 +145,22 @@ const ListApp: React.FC = () => {
             </div>
             <div className="safetydistrict">
                 <label>安否</label>
-                <button onClick={() => handleFilterByDistrict("神領")}>神領</button>
-                <button onClick={() => handleFilterByDistrict("上分")}>上分</button>
-                <button onClick={() => handleFilterByDistrict("下分")}>下分</button>
-                <button onClick={() => handleFilterByDistrict("阿野")}>阿野</button>
-                <button onClick={() => handleFilterByDistrict("鬼籠野")}>鬼籠野</button>
+                <button onClick={() => handleFilterByDistrictSafety("神領")}>神領</button>
+                <button onClick={() => handleFilterByDistrictSafety("上分")}>上分</button>
+                <button onClick={() => handleFilterByDistrictSafety("下分")}>下分</button>
+                <button onClick={() => handleFilterByDistrictSafety("阿野")}>阿野</button>
+                <button onClick={() => handleFilterByDistrictSafety("鬼籠野")}>鬼籠野</button>
             </div>
             <div className="mapdistrict">
                 <label>地図</label>
-                <button onClick={() => handleFilterByDistrict("神領")}>神領</button>
-                <button onClick={() => handleFilterByDistrict("上分")}>上分</button>
-                <button onClick={() => handleFilterByDistrict("下分")}>下分</button>
-                <button onClick={() => handleFilterByDistrict("阿野")}>阿野</button>
-                <button onClick={() => handleFilterByDistrict("鬼籠野")}>鬼籠野</button>
+                <button onClick={() => handleFilterByDistrictMap("神領")}>神領</button>
+                <button onClick={() => handleFilterByDistrictMap("上分")}>上分</button>
+                <button onClick={() => handleFilterByDistrictMap("下分")}>下分</button>
+                <button onClick={() => handleFilterByDistrictMap("阿野")}>阿野</button>
+                <button onClick={() => handleFilterByDistrictMap("鬼籠野")}>鬼籠野</button>
             </div>
 
+            {isSafetyView && (
             <table border={1}>
                 <thead>
                     <tr>
@@ -141,8 +183,9 @@ const ListApp: React.FC = () => {
                 )}
                 </tbody>
             </table>
+            )}
             
-        {!isSafetyView && (
+        {isMapView && (
             <GoogleMap
                 mapContainerStyle = {containerStyle}
                 center = {mapCenter}
@@ -152,8 +195,18 @@ const ListApp: React.FC = () => {
                     <Marker 
                         key = {position.id}
                         position = {{lat: position.latitude, lng: position.longitude}} 
+                        icon = {getMarkerIcon(position.safety!)}
                     />
                 ))}
+            </GoogleMap>
+        )}
+
+        {isRescueView && (
+            <GoogleMap
+                mapContainerStyle = {containerStyle}
+                center = {mapCenter}
+                zoom = {15}
+            >
             </GoogleMap>
         )}
         </div>
