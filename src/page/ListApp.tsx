@@ -33,12 +33,13 @@ const mapchange: { [key: string]: { lat: number; lng: number } } = {
 
 const ListApp: React.FC = () => {
     const [usersWithPositions, setUsersWithPositions] = useState<UserWithPosition[]>([]);
+    const [rescuePositions, setRescuePositions] = useState<RescuePosition[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [filterDistrict, setFilterDistrict] = useState<string>("");
     const [mapCenter, setMapCenter] = useState<{ lat: number, lng: number }>(center);
     const [isSafetyView, setIsSafetyView] = useState<boolean>(false);
     const [isMapView, setIsMapView] = useState<boolean>(false);
-    const [isRescueView, setIsRescueView] = useState<RescuePosition[]>([]);
+    const [isRescueView, setIsRescueView] = useState<boolean>(false);
     
     const fetchUsersWithPositionsData = async () => {
         try {
@@ -66,12 +67,14 @@ const ListApp: React.FC = () => {
 
     const fetchRescuePositionsData = async () => {
         try {
-            const usersCollection = collection(db, "rescue");
-            const usersSnapshot = await getDocs(usersCollection);
-            const usersList = usersSnapshot.docs.map(doc => ({
+            const rescueCollection = collection(db, "rescue");
+            const rescueSnapshot = await getDocs(rescueCollection);
+            const rescueList = rescueSnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             })) as RescuePosition[];
+
+            setRescuePositions(rescueList);
     }catch (error) {
         console.error("データの取得に失敗しました: ", error);
     }
@@ -90,12 +93,14 @@ const ListApp: React.FC = () => {
         setFilterDistrict(district);
         setIsSafetyView(true);
         setIsMapView(false);
+        setIsRescueView(false);
     };
 
     const handleFilterByDistrictMap = (district: string) => {
         setFilterDistrict(district);
         setIsSafetyView(false);
         setIsMapView(true);
+        setIsRescueView(false);
 
         const location = mapchange[district];
         if (location) {
@@ -131,6 +136,11 @@ const ListApp: React.FC = () => {
         };
     };
 
+    const handleToggleRescueView = () => {
+        setIsRescueView(!isRescueView);
+        //setIsMapView(!isMapView);
+    };
+
     return (
         <div>
             <div className="name-order">
@@ -158,6 +168,12 @@ const ListApp: React.FC = () => {
                 <button onClick={() => handleFilterByDistrictMap("下分")}>下分</button>
                 <button onClick={() => handleFilterByDistrictMap("阿野")}>阿野</button>
                 <button onClick={() => handleFilterByDistrictMap("鬼籠野")}>鬼籠野</button>
+            </div>
+
+            <div>
+            <button onClick={handleToggleRescueView}>
+                救助隊を表示
+            </button>
             </div>
 
             {isSafetyView && (
@@ -198,15 +214,15 @@ const ListApp: React.FC = () => {
                         icon = {getMarkerIcon(position.safety!)}
                     />
                 ))}
-            </GoogleMap>
-        )}
 
-        {isRescueView && (
-            <GoogleMap
-                mapContainerStyle = {containerStyle}
-                center = {mapCenter}
-                zoom = {15}
-            >
+                {isRescueView && (
+                    rescuePositions.map(rescue => (
+                        <Marker
+                            key={rescue.id}
+                            position={{ lat: rescue.latitude, lng: rescue.longitude }}
+                        />
+                    ))
+                )}
             </GoogleMap>
         )}
         </div>
