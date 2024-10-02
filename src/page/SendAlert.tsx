@@ -1,49 +1,33 @@
 import React, { useEffect, useState, useCallback} from 'react';
-import { collection, addDoc, deleteDoc } from 'firebase/firestore';
+import { doc, collection, addDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
-function  sendAlert(message:string){
-    return async ()=>{
-        await deleteDoc(db, doc, "alert", id);
-    }
-}
-
-const SendAlert: React.FC = () => {
-    const [inputText, setInputText] = useState<string>("");
-    const [status, setStatus] = useState<string>("");
-
-    const saveSendAlert = async () => {
-        if (!inputText.trim()) {
-            setStatus("文を入力してください。");
+const SendAlert = async (action: 'save' | 'delete', message: string, id?: string) => {
+    if (action === 'save' && message) {
+        if (!message.trim()) {
+            console.log("文を入力してください。");
             return;
         }
-
         try {
             await addDoc(collection(db, 'alert'), {
-                text: inputText,
+                text: message,
                 createdAt: new Date()
-            });
-        setInputText("");
-        setStatus("正常に保存されました。");
+        });
+        console.log("保存しました");
     } catch (error) {
-        console.error("Error fetching positions: ", error);
-        setStatus("エラーが発生しました。もう一度お試しください。")
+        console.log("保存に失敗しました");
+    }
+}else if (action === 'delete' && id) {
+    try {
+        const alertDocRef = doc(db, "alert", id);
+        await deleteDoc(alertDocRef);
+        console.log("削除しました");
+    }catch (error) {
+        console.error("Error deleting positions: ", error);
+        console.log("削除に失敗しました");
+    }
     }
 };
 
-return (
-    <div>
-            <label>
-                文を入力してください:{" "}
-                <input
-                    type="string"
-                    value={inputText}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInputText(event.target.value)}
-                />
-            </label>
-                <button onClick={saveSendAlert}>保存</button>
-    </div>
-);
-};
 
 export default SendAlert;
