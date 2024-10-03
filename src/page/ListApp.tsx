@@ -248,12 +248,17 @@ const ListApp: React.FC = () => {
                 center = {selectedUserPosition || mapCenter}
                 zoom = {15}
             >
-                {selectedUserPosition && (
-                    <Marker
-                        position={selectedUserPosition}
-                        icon={getMarkerIcon('selected')}
-                    />
-                )}
+                {usersWithPositions.map((position) => (
+                    position.safety === "無事"
+                    ? null
+                    : (
+                        <Marker
+                            key = {position.id}
+                            position = {{lat: position.latitude, lng: position.longitude}}
+                            icon = {getMarkerIcon(position.safety!)}
+                        />
+                    )
+                ))}
 
                 {filteredUsers.map((position) => (
                     <Marker 
