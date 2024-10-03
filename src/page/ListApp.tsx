@@ -23,6 +23,14 @@ type RescuePosition = {
     doing: string;
 }
 
+type PublicServantPosition = {
+    id: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+    doing: string;
+}
+
 const mapchange: { [key: string]: { lat: number; lng: number } } = {
     "神領": { lat: 33.96725162, lng: 134.35047543},
     "上分": { lat: 33.964313, lng: 134.2590853},
@@ -34,12 +42,14 @@ const mapchange: { [key: string]: { lat: number; lng: number } } = {
 const ListApp: React.FC = () => {
     const [usersWithPositions, setUsersWithPositions] = useState<UserWithPosition[]>([]);
     const [rescuePositions, setRescuePositions] = useState<RescuePosition[]>([]);
+    const [publicservantPositions, setPublicServantPositions] = useState<PublicServantPosition[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [filterDistrict, setFilterDistrict] = useState<string>("");
     const [mapCenter, setMapCenter] = useState<{ lat: number, lng: number }>(center);
     const [isSafetyView, setIsSafetyView] = useState<boolean>(false);
     const [isMapView, setIsMapView] = useState<boolean>(false);
     const [isRescueView, setIsRescueView] = useState<boolean>(false);
+    const [isPublicServantView, setIsPublicServantView] = useState<boolean>(false);
     const [selectedUserPosition, setSelectedUserPosition] = useState<{ lat: number, lng: number } | null>(null);
     
     const fetchUsersWithPositionsData = async () => {
@@ -81,6 +91,21 @@ const ListApp: React.FC = () => {
     }
     };
 
+    const fetchPublicServantPositionsData = async () => {
+        try {
+            const publicservantCollection = collection(db, "publicservant");
+            const publicservantSnapshot = await getDocs(publicservantCollection);
+            const publicservantList = publicservantSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as PublicServantPosition[];
+
+            setPublicServantPositions(publicservantList);
+        }catch (error) {
+            console.error("データの取得に失敗しました: ", error);
+        }
+    };
+
     const handleUserClick = async (latitude: number, longitude: number) => {
         setSelectedUserPosition({ lat: latitude, lng: longitude});
         setMapCenter({lat: latitude, lng:longitude});
@@ -90,6 +115,7 @@ const ListApp: React.FC = () => {
     useEffect(() => {
         fetchUsersWithPositionsData();
         fetchRescuePositionsData();
+        fetchPublicServantPositionsData();
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,6 +127,7 @@ const ListApp: React.FC = () => {
         setIsSafetyView(true);
         setIsMapView(false);
         setIsRescueView(false);
+        setIsPublicServantView(false);
     };
 
     const handleFilterByDistrictMap = (district: string) => {
@@ -108,6 +135,7 @@ const ListApp: React.FC = () => {
         setIsSafetyView(false);
         setIsMapView(true);
         setIsRescueView(false);
+        setIsPublicServantView(false);
 
         const location = mapchange[district];
         if (location) {
@@ -147,6 +175,10 @@ const ListApp: React.FC = () => {
         setIsRescueView(!isRescueView);
     };
 
+    const handleTogglePublicServantView = () => {
+        setIsPublicServantView(!isPublicServantView);
+    }
+
     return (
         <div>
             <div className="name-order">
@@ -179,6 +211,9 @@ const ListApp: React.FC = () => {
             <div>
             <button onClick={handleToggleRescueView}>
                 救助隊を表示
+            </button>
+            <button onClick={handleTogglePublicServantView}>
+                役場職員を表示
             </button>
             </div>
 
@@ -234,6 +269,16 @@ const ListApp: React.FC = () => {
                             key={rescue.id}
                             position={{ lat: rescue.latitude, lng: rescue.longitude }}
                         />
+                    ))
+                )}
+
+                {isPublicServantView && (
+                    publicservantPositions.map(publicservant => (
+                        <Marker     
+                            key={publicservant.id}
+                            position={{ lat: publicservant.latitude, lng: publicservant.longitude }}
+                        />
+
                     ))
                 )}
             </GoogleMap>
