@@ -40,6 +40,7 @@ const ListApp: React.FC = () => {
     const [isSafetyView, setIsSafetyView] = useState<boolean>(false);
     const [isMapView, setIsMapView] = useState<boolean>(false);
     const [isRescueView, setIsRescueView] = useState<boolean>(false);
+    const [selectedUserPosition, setSelectedUserPosition] = useState<{ lat: number, lng: number } | null>(null);
     
     const fetchUsersWithPositionsData = async () => {
         try {
@@ -79,6 +80,12 @@ const ListApp: React.FC = () => {
         console.error("データの取得に失敗しました: ", error);
     }
     };
+
+    const handleUserClick = async (latitude: number, longitude: number) => {
+        setSelectedUserPosition({ lat: latitude, lng: longitude});
+        setMapCenter({lat: latitude, lng:longitude});
+        setIsMapView(true);
+    }
 
     useEffect(() => {
         fetchUsersWithPositionsData();
@@ -138,7 +145,6 @@ const ListApp: React.FC = () => {
 
     const handleToggleRescueView = () => {
         setIsRescueView(!isRescueView);
-        //setIsMapView(!isMapView);
     };
 
     return (
@@ -187,7 +193,7 @@ const ListApp: React.FC = () => {
                 <tbody className="citizentable">
                         {filteredUsers.length > 0 ? (
                             filteredUsers.map(user => (
-                        <tr key={user.id}>
+                        <tr key={user.id} onClick={() => handleUserClick(user.latitude, user.longitude)}>
                             <td className="username">{user.name}</td>
                             <td className="usersafety">{user.safety}</td>
                         </tr>
@@ -204,9 +210,16 @@ const ListApp: React.FC = () => {
         {isMapView && (
             <GoogleMap
                 mapContainerStyle = {containerStyle}
-                center = {mapCenter}
+                center = {selectedUserPosition || mapCenter}
                 zoom = {15}
             >
+                {selectedUserPosition && (
+                    <Marker
+                        position={selectedUserPosition}
+                        icon={getMarkerIcon('selected')}
+                    />
+                )}
+
                 {filteredUsers.map((position) => (
                     <Marker 
                         key = {position.id}
