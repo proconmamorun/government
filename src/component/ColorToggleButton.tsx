@@ -32,7 +32,7 @@ const ColorToggleButton: React.FC<ColorToggleButtonProps> = ({ content, setConte
             >名簿</ToggleButton>
             <ToggleButton value="alert" className="alertbutton"
                 onClick={() => setContent(2)}
-            >警報</ToggleButton>
+            >危険設定</ToggleButton>
         </ToggleButtonGroup>
     );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ColorToggleButton from './component/ColorToggleButton';
 import MainApp from './page/MainApp';
 import ListApp from './page/ListApp';
-import SendAlert from "./page/SendAlert";
+import SharePhoto from './page/sharephoto';
 import './App.css';
 import './index.css';
 
@@ -12,12 +12,12 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (content === 2) {
-            handleSendAlert();
+            handleSharePhoto();
         }
     }, [content]);
 
-    const handleSendAlert = () => {
-        SendAlert("save", "send Alert!", "123");
+    const handleSharePhoto = () => {
+        SharePhoto("File");
     };
 
     return (
