@@ -10,16 +10,6 @@ import './index.css';
 const App: React.FC = () => {
     const [content, setContent] = useState(0);
 
-    useEffect(() => {
-        if (content === 2) {
-            handleSharePhoto();
-        }
-    }, [content]);
-
-    const handleSharePhoto = () => {
-        SharePhoto("File");
-    };
-
     return (
         <div>
             <div className="header">
@@ -27,7 +17,7 @@ const App: React.FC = () => {
             <ColorToggleButton content={content} setContent={setContent} />
             {content === 0 && <MainApp />}
             {content === 1 && <ListApp />}
-            {content === 2 && null}
+            {content === 2 && <SharePhoto/>}
         </div>
     );
 };
