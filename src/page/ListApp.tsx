@@ -5,6 +5,7 @@ import './MainApp';
 import { containerStyle, center } from './MainApp';
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import '../component/GoogleMapComponent';
+import { DocumentCounter } from './countDocuments'
 
 type UserWithPosition = {
     id: string;
@@ -181,6 +182,7 @@ const ListApp: React.FC = () => {
 
     return (
         <div>
+        <div>
             <div className="name-order">
                 <label htmlFor="search">検索: </label>
                 <input
@@ -241,8 +243,9 @@ const ListApp: React.FC = () => {
                 </tbody>
             </table>
             )}
-            
+        
         {isMapView && (
+            <div>
             <GoogleMap
                 mapContainerStyle = {containerStyle}
                 center = {selectedUserPosition || mapCenter}
@@ -286,10 +289,14 @@ const ListApp: React.FC = () => {
 
                     ))
                 )}
-            </GoogleMap>
+            </GoogleMap> 
+
+            <DocumentCounter />
+            </div>
         )}
         </div>
-    );
+    </div>
+    )
 };
 
 export default ListApp;

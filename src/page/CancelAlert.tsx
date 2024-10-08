@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback} from 'react';
+/*import React, { useEffect, useState, useCallback} from 'react';
 import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import 'sendAlert';
@@ -23,6 +23,6 @@ return (
         </button>
     </div>
 )
-};
+};*/
 
-export default CancelAlert;
+export default {};

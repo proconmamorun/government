@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+/*import React, { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -81,6 +81,6 @@ const GoogleMapComponent: React.FC = () => {
         )}
       </div>
   );
-};
+};*/
 
-export default GoogleMapComponent;
+export default {};
