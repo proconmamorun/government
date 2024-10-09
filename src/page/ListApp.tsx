@@ -148,11 +148,11 @@ const ListApp: React.FC = () => {
         return (
             (!filterDistrict || user.district === filterDistrict) &&
             ((user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) || 
-            (user.safety && user.safety.toLowerCase().includes(searchTerm.toLowerCase())))
+            (user.safety && typeof user.safety === 'string' && user.safety.toLowerCase().includes(searchTerm.toLowerCase())))
     );
 });
 
-    const getMarkerIcon = (safety: string) => {
+    const getMarkerIcon = (safety?: string) => {
         let color;
         if (safety === "救助が必要") {
             color = 'red';
@@ -225,14 +225,20 @@ const ListApp: React.FC = () => {
                     <tr>
                         <th className="label">Name</th>
                         <th className="label">Safety</th>
+                        <th className="label">Position</th>
                     </tr>
                 </thead>
                 <tbody className="citizentable">
                         {filteredUsers.length > 0 ? (
                             filteredUsers.map(user => (
-                        <tr key={user.id} onClick={() => handleUserClick(user.latitude, user.longitude)}>
+                        <tr key={user.id}>
                             <td className="username">{user.name}</td>
                             <td className="usersafety">{user.safety}</td>
+                            <td className="userposition">
+                                <button onClick={() => handleUserClick(user.latitude, user.longitude)}>
+                                    位置を表示
+                                </button>
+                            </td>
                         </tr>
                     ))
                 ) : (
@@ -252,22 +258,20 @@ const ListApp: React.FC = () => {
                 zoom = {15}
             >
                 {usersWithPositions.map((position) => (
-                    position.safety === "無事"
-                    ? null
-                    : (
+                    position.safety && position.safety !== "無事" ? (
                         <Marker
                             key = {position.id}
                             position = {{lat: position.latitude, lng: position.longitude}}
                             icon = {getMarkerIcon(position.safety!)}
                         />
-                    )
+                    ) : null
                 ))}
 
                 {filteredUsers.map((position) => (
                     <Marker 
                         key = {position.id}
                         position = {{lat: position.latitude, lng: position.longitude}} 
-                        icon = {getMarkerIcon(position.safety!)}
+                        icon = {getMarkerIcon(position.safety)}
                     />
                 ))}
 
