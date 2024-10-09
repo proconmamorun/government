@@ -153,19 +153,10 @@ const ListApp: React.FC = () => {
 });
 
     const getMarkerIcon = (safety?: string) => {
-        let color;
-        if (safety === "救助が必要") {
-            color = 'red';
-        }else if (safety === "無事") {
-            color = 'green';
-        }else {
-            color ='white';
-        }
-
         return {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
-            fillColor: color,
+            fillColor: 'red',
             fillOpacity: 1,
             strokeColor: 'black',
             strokeWeight: 0
@@ -236,7 +227,7 @@ const ListApp: React.FC = () => {
                             <td className="usersafety">{user.safety}</td>
                             <td className="userposition">
                                 <button onClick={() => handleUserClick(user.latitude, user.longitude)}>
-                                    位置を表示
+                                    位置情報
                                 </button>
                             </td>
                         </tr>
