@@ -64,7 +64,14 @@ const ListApp: React.FC = () => {
 
             console.log("Fetched Users With Positions:", usersList);
 
-        const sortedUsers = usersList.sort((a, b) => {
+            const sameUsers: { [key: string]: UserWithPosition } = {};
+            usersList.forEach(user => {
+                if (user.id) {
+                    sameUsers[user.id] = user;
+                }
+            });
+
+        const sortedUsers = Object.values(sameUsers).sort((a, b) => {
         if (a.safety === "救助が必要" && b.safety !== "救助が必要") return -1;
         if (a.safety !== "救助が必要" && b.safety === "救助が必要") return 1;
         if (a.safety === "無事" && b.safety !== "無事") return -1;
